@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt" version="2.0">
+
+	<footer class="footer">
+		<div class="content has-text-centered">
+			<p>
+				<strong>eFoods</strong> by Haseeb Ahmad, Talha Mahmood, Louai
+				Abdelsalam.
+			</p>
+			<p>
+				<a href="https://bulma.io"> <img
+					src="${param.rootURLPath}/res/img/made-with-bulma.png"
+					alt="Made with Bulma" width="128" height="24" />
+				</a>
+			</p>
+		</div>
+	</footer>
+
+</jsp:root>

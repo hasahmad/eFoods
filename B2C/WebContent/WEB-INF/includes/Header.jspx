@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	version="2.0">
+
+	<head>
+		<meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>${param.title}</title>
+        <!-- CSS -->
+		<link rel="stylesheet" href="${param.rootURLPath}/res/css/main.css" />
+        <link rel="stylesheet" href="${param.rootURLPath}/res/css/bulma.min.css" />
+        
+        <!-- JS -->
+		<script type="text/javascript" src="${param.rootURLPath}/res/js/main.js"><!-- --></script>
+    </head>
+	
+</jsp:root>

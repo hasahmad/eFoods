@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	version="2.0">
+
+	<div class="card">
+		<header class="card-header">
+			<p class="card-header-title">Cat 1</p>
+			<a class="card-header-icon secondary" style="border-style: solid; border-width: 1px;" aria-label="more options">
+				<strong>View All</strong>
+			</a>
+		</header>
+		
+		<div class="card-content">
+			<div class="content">
+				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris.
+			</div>
+		</div>
+		
+		<!-- <footer class="card-footer has-text-centered">
+			<a href="#" class="card-footer-item has-text-centered">View All</a>
+		</footer> -->
+	</div>
+
+</jsp:root>

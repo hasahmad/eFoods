@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	version="2.0">
+	<jsp:directive.page contentType="text/html; charset=UTF-8" 
+		pageEncoding="UTF-8" session="false"/>
+	<jsp:output doctype-root-element="html"
+		doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
+		doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
+		omit-xml-declaration="true" />
+<![CDATA[<!DOCTYPE html>]]>
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<c:set var="rootURLPath" value="${pageContext.request.contextPath}"></c:set>
+	
+	<jsp:include page="../includes/Header.jspx">
+		<jsp:param name="title" value="Foods R Us!" />
+		<jsp:param name="rootURLPath" value="${rootURLPath}" />
+	</jsp:include>
+
+	<body>
+		<jsp:include page="../includes/Nav.jspx">
+			<jsp:param name="rootURLPath" value="${rootURLPath}" />
+		</jsp:include>
+		<main class="bd-main">
+			<section class="hero is-medium is-primary is-bold">
+				<div class="hero-body">
+			  		<div class="container">
+			    		<h1 class="title">Food R Us!</h1>
+			      		<h2 class="subtitle">An eCommerce Site</h2>
+			    	</div>
+			  </div>
+			</section>
+			<div class="container">
+				<section id="tabs">
+					<div class="tabs is-boxed">
+						<ul>
+						    <li><a>
+						    	<span class="icon is-small"><i class="fas fa-image" aria-hidden="true"></i></span>
+						    	<span>Cat 1</span></a>
+						    </li>
+						    <li><a>
+						    	<span class="icon is-small"><i class="fas fa-image" aria-hidden="true"></i></span>
+						    	<span>Cat 2</span></a>
+						    </li>
+						    <li><a>
+						    	<span class="icon is-small"><i class="fas fa-image" aria-hidden="true"></i></span>
+						    	<span>Cat 3</span></a>
+						    </li>
+						    <li><a>
+						    	<span class="icon is-small"><i class="fas fa-image" aria-hidden="true"></i></span>
+						    	<span>Cat 4</span></a>
+						    </li>
+						</ul>
+					</div>
+				</section>
+				
+				<section id="page-products">
+					<div class="card">
+						<header class="card-header">
+							<p class="card-header-title">Cat 1</p>
+							<a class="card-header-icon secondary" style="border-style: solid; border-width: 1px;" aria-label="more options">
+								<strong>View All</strong>
+							</a>
+						</header>
+						
+						<div class="card-content">
+							<div class="content">
+								Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris.
+							</div>
+						</div>
+						
+						<!-- <footer class="card-footer has-text-centered">
+							<a href="#" class="card-footer-item has-text-centered">View All</a>
+						</footer> -->
+					</div>
+				</section>
+			</div>
+		</main>
+		<jsp:include page="../includes/Footer.jspx">
+			<jsp:param name="rootURLPath" value="${rootURLPath}" />
+		</jsp:include>
+	</body>
+</html>
+</jsp:root>
