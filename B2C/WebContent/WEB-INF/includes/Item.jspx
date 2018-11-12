@@ -4,17 +4,24 @@
 	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
 	version="2.0">
 
-	<div class="card">
-		<header class="card-header">
-			<p class="card-header-title">Cat 1</p>
-			<a class="card-header-icon secondary" style="border-style: solid; border-width: 1px;" aria-label="more options">
-				<strong>View All</strong>
-			</a>
-		</header>
-		
+	<div class="card">		
 		<div class="card-content">
+			<div class="media">
+				<div class="media-left">
+					<figure class="image is-48x48">
+						<img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image" />
+					</figure>
+				</div>
+				
+				<div class="media-content">
+					<p class="title is-4">${params.product.name}</p>
+					<p class="subtitle is-6">${params.product.id}</p>
+				</div>
+			</div>
 			<div class="content">
-				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris.
+				<fmt:setLocale value = "en_US"/>
+				<fmt:formatNumber type="currency" value="${params.product.price}"></fmt:formatNumber>
+				<button id="product-${params.product.id}" class="button button-info has-text-centered add-to-cart">Add to cart</button>
 			</div>
 		</div>
 		

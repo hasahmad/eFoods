@@ -32,48 +32,61 @@
 			  </div>
 			</section>
 			<div class="container">
-				<section id="tabs">
-					<div class="tabs is-boxed">
+				<section id="products-tabs">
+					<div class="tabs is-boxed" id="tabNav">
 						<ul>
-						    <li><a>
-						    	<span class="icon is-small"><i class="fas fa-image" aria-hidden="true"></i></span>
-						    	<span>Cat 1</span></a>
+						    <li data-target="pane-1" id="1" class="is-active">
+						    	<a>
+							    	<span class="icon is-small"><i class="fa fa"></i></span>
+							    	<span>Cat 1</span>
+							    </a>
 						    </li>
-						    <li><a>
-						    	<span class="icon is-small"><i class="fas fa-image" aria-hidden="true"></i></span>
-						    	<span>Cat 2</span></a>
+						    <li data-target="pane-2" id="2">
+						    	<a>
+							    	<span class="icon is-small"><i class="fa fa"></i></span>
+							    	<span>Cat 2</span>
+							    </a>
 						    </li>
-						    <li><a>
-						    	<span class="icon is-small"><i class="fas fa-image" aria-hidden="true"></i></span>
-						    	<span>Cat 3</span></a>
+						    <li data-target="pane-3" id="3">
+						    	<a>
+							    	<span class="icon is-small"><i class="fa fa"></i></span>
+							    	<span>Cat 3</span>
+							    </a>
 						    </li>
-						    <li><a>
-						    	<span class="icon is-small"><i class="fas fa-image" aria-hidden="true"></i></span>
-						    	<span>Cat 4</span></a>
+						    <li data-target="pane-4" id="4">
+						    	<a>
+							    	<span class="icon is-small"><i class="fa fa"></i></span>
+							    	<span>Cat 4</span>
+							    </a>
 						    </li>
 						</ul>
 					</div>
-				</section>
-				
-				<section id="page-products">
-					<div class="card">
-						<header class="card-header">
-							<p class="card-header-title">Cat 1</p>
-							<a class="card-header-icon secondary" style="border-style: solid; border-width: 1px;" aria-label="more options">
-								<strong>View All</strong>
-							</a>
-						</header>
-						
-						<div class="card-content">
-							<div class="content">
-								Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris.
-							</div>
+					
+					<div class="tab-content">
+						<div class="tab-pane level" id="pane-1">
+							Cat Cat 1
 						</div>
 						
-						<!-- <footer class="card-footer has-text-centered">
-							<a href="#" class="card-footer-item has-text-centered">View All</a>
-						</footer> -->
+						<div class="tab-pane level" id="pane-2">
+							Cat Cat 2
+						</div>
+						
+						<div class="tab-pane level" id="pane-3">
+							Cat Cat 3
+						</div>
+						
+						<div class="tab-pane level" id="pane-4">
+							Cat Cat 4
+						</div>
 					</div>
+				</section>
+
+				<section id="page-products">
+					<jsp:include page="../includes/CatItemsCard.jspx">
+						<jsp:param name="catName" value="Cat 1" />
+						<jsp:param name="limit" value="4" />
+						<jsp:param name="products" value="${products}" />
+					</jsp:include>
 				</section>
 			</div>
 		</main>

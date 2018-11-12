@@ -11,9 +11,6 @@
         <!-- CSS -->
 		<link rel="stylesheet" href="${param.rootURLPath}/res/css/main.css" />
         <link rel="stylesheet" href="${param.rootURLPath}/res/css/bulma.min.css" />
-        
-        <!-- JS -->
-		<script type="text/javascript" src="${param.rootURLPath}/res/js/main.js"><!-- --></script>
     </head>
 	
 </jsp:root>
