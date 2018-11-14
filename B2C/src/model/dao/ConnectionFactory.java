@@ -7,7 +7,7 @@ import java.sql.Statement;
 
 public class ConnectionFactory {
 	public static final String DB_HOST = "localhost";
-	public static final String DB_PORT = "1527";
+	public static final String DB_PORT = "64413";
 	public static final String DB_NAME = "EECS";
 	public static final String DB_USER = "student";
 	public static final String DB_PASS = "secret";

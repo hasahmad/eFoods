@@ -5,6 +5,7 @@ import java.sql.Connection;
 public abstract class DAO {
 	protected static String TABLE_NAME;
 	protected static Connection conn;
+	protected ArrayList <items>;
 
 	public DAO() {
 		this("");
