@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
 	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
 	version="2.0">
 	<jsp:directive.page contentType="text/html; charset=UTF-8" 
@@ -34,9 +35,9 @@
 			<div class="container">
 				<section id="products-tabs">
 					<div class="tabs is-boxed" id="tabNav">
-						<c:if test="${!empty model}">
+						<c:if test="${!empty cats}">
 							<ul>
-								<c:forEach items="${model.getCategories()}" var="cat" varStatus="loop">
+								<c:forEach items="${cats}" var="cat" varStatus="loop">
 									<li data-target="pane-${loop.index+1}" id="${loop.index+1}" class="is-active">
 								    	<a>
 									    	<span class="icon is-small"><i class="fa fa"></i></span>
@@ -48,9 +49,9 @@
 						</c:if>
 					</div>
 					
-					<c:if test="${!empty model}">
+					<c:if test="${!empty cats}">
 						<div class="tab-content">
-							<c:forEach items="${model.getCategories()}" var="cat" varStatus="loop">
+							<c:forEach items="${cats}" var="cat" varStatus="loop">
 								<div class="tab-pane level" id="pane-${loop.index+1}">
 									${cat.name}
 								</div>
@@ -60,12 +61,12 @@
 				</section>
 
 				<section id="page-products">
-					<c:if test="${!empty model}">
-						<c:forEach items="${model.getCategories()}" var="cat" varStatus="loop">
+					<c:if test="${!empty catsWithFoods}">
+						<c:forEach items="${catsWithFoods}" var="cat" varStatus="loop">
 							<jsp:include page="../includes/CatItemsCard.jspx">
-								<jsp:param name="catName" value="${cat.name}" />
+								<jsp:param name="catName" value="${cat.key.name}" />
 								<jsp:param name="limit" value="3" />
-								<jsp:param name="products" value="${model.getFoodsBy('cid', cat.id, false)}" />
+								<jsp:param name="items" value="${cat.value}" />
 							</jsp:include>
 						</c:forEach>
 					</c:if>

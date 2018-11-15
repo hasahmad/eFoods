@@ -37,13 +37,14 @@ public class Home extends HttpServlet {
 
 		if (getFoodByCat == null) {
 			try {
+				request.setAttribute("catsWithFoods", model.getCatsWithFoods());
+				request.setAttribute("cats", model.getCategories());
 //				System.out.println(model.getCategories().toArray());
 			} catch (Exception e) {
 				request.setAttribute("error", e.getMessage());
 			}
 		}
-		
-		
+
 		request.getRequestDispatcher("/WEB-INF/pages/Home.jspx").forward(request, response);
 	}
 

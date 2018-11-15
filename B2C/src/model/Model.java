@@ -1,6 +1,9 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import model.catalog.Category;
 import model.catalog.Item;
@@ -65,6 +68,38 @@ public class Model {
 	
 	public Category getCategory(String cat) throws Exception {
 		return catDao.findOne(cat);
+	}
+	
+	public Map<String, List<Item>> getCatNameWithFoods() throws Exception {
+		Map<String, List<Item>> result = new HashMap<String, List<Item>>();
+
+		for (Category cat: this.getCategories()) {
+			List<Item> items = new ArrayList<Item>();
+			for (Item item: this.getFoods()) {
+				if (cat.getId() == item.getCatID()) {
+					items.add(item);
+					result.put(cat.getName(), items);
+				}
+			}
+		}
+
+		return result;
+	}
+	
+	public Map<Category, List<Item>> getCatsWithFoods() throws Exception {
+		Map<Category, List<Item>> result = new HashMap<Category, List<Item>>();
+		
+		for (Category cat: this.getCategories()) {
+			List<Item> items = new ArrayList<Item>();
+			for (Item item: this.getFoods()) {
+				if (cat.getId() == item.getCatID()) {
+					items.add(item);
+					result.put(cat, items);
+				}
+			}
+		}
+
+		return result;
 	}
 
 	

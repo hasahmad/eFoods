@@ -57,34 +57,15 @@ public class Product extends HttpServlet {
 		try {			
 			if (byCat != null) {
 				if (byCat.toLowerCase().equals("name")) {
-					Map<String, List<Item>> result = new HashMap<String, List<Item>>();
-					
-					for (Category cat: model.getCategories()) {
-						List<Item> items = new ArrayList<Item>();
-						for (Item item: model.getFoods()) {
-							if (cat.getId() == item.getCatID()) {
-								items.add(item);
-								result.put(cat.getName(), items);
-							}
-						}
-					}
+					Map<String, List<Item>> result = model.getCatNameWithFoods();
 					resultJson = new Gson().toJsonTree(result);
 				} else {
-					Map<Category, List<Item>> result = new HashMap<Category, List<Item>>();
+					Map<Category, List<Item>> result = model.getCatsWithFoods();
 					
-					for (Category cat: model.getCategories()) {
-						List<Item> items = new ArrayList<Item>();
-						for (Item item: model.getFoods()) {
-							if (cat.getId() == item.getCatID()) {
-								items.add(item);
-								result.put(cat, items);
-							}
-						}
-					}
 					resultJson = new Gson().toJsonTree(result);
 				}
 			} else {
-				List<Item> result = model.getFoods();			
+				List<Item> result = model.getFoods();
 
 				if (num != null) 
 				{
