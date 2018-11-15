@@ -15,13 +15,13 @@
 				
 				<div class="media-content">
 					<p class="title is-4">${params.product.name}</p>
-					<p class="subtitle is-6">${params.product.id}</p>
+					<p class="subtitle is-6">${params.product.number}</p>
 				</div>
 			</div>
 			<div class="content">
 				<fmt:setLocale value = "en_US"/>
 				<fmt:formatNumber type="currency" value="${params.product.price}"></fmt:formatNumber>
-				<button id="product-${params.product.id}" class="button button-info has-text-centered add-to-cart">Add to cart</button>
+				<button id="product-${params.product.number}" class="button button-info has-text-centered add-to-cart">Add to cart</button>
 			</div>
 		</div>
 		

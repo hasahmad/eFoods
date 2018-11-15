@@ -8,5 +8,4 @@
     <error-code>404</error-code>
     <location>/WEB-INF/pages/Error404.jspx</location>
   </error-page>
-
 </web-app>

@@ -1,83 +1,54 @@
-package model;
+package model.dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
+import java.sql.Blob;
 import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.List;
 
-public class CategoryDAO extends DAO{
-	
-	public CategoryDAO() {
+import model.catalog.Category;
+
+public class CategoryDAO extends DAO<Category> {
+
+	public CategoryDAO() throws Exception {
 		super("CATEGORY");
+		
+		COLUMNS.put("name", "NAME");
+		COLUMNS.put("desc", "DESCRIPTION");
+		COLUMNS.put("pic", "PICTURE");
+		COLUMNS.put("id", "ID");
 	}
 
-	public Category createCategory(ResultSet r) throws Exception {
-		Category category = new Category();
-		category.setName(getName(r));
-		category.setDescription(getDescription(r));
-		category.setId(getId(r));
-		category.setPicture(getPicture(r));
-		return category;
+	@Override
+	public String convertToTableName(String by) {
+		String result = COLUMNS.get("id");
+
+		if (COLUMNS.containsKey(by) || COLUMNS.containsKey(by.toLowerCase())) {
+			result = COLUMNS.get(by);
+		} else if (by.equals(COLUMNS.get("name"))) {
+			result = COLUMNS.get("name");
+		} else if (by.toLowerCase().equals("description") || by.equals(COLUMNS.get("desc"))) {
+			result = COLUMNS.get("desc");
+		} else if (by.toLowerCase().equals("picture") || by.equals(COLUMNS.get("pic"))) {
+			result = COLUMNS.get("pic");
+		} else if (by.equals(COLUMNS.get("id"))) {
+			result = COLUMNS.get("id");
+		} 
+		return result;
 	}
 
-	public void populateBeans() throws Exception {
-		Connection conn = ConnectionFactory.getConn();
-		List<Category> categories = new ArrayList<>();
-		
-		String query = "select * from " + TABLE_NAME;
-		PreparedStatement stmt = conn.prepareStatement(query);
-		ResultSet r = stmt.executeQuery();
-
-		while (r.next()) {
-			Category i = createCategory(r);
-			if (!categories.contains(i)) {
-				categories.add(i);
-			}
-		}
-		
-		ConnectionFactory.closeConn(r, stmt, conn);
-    }
-	
-	
-	private List<CategoryBean> returnCatList(ResultSet r) throws Exception
-	{
-    	List<Category> resultSet = new ArrayList<Category>();
-    	
-	    while(r.next()) 
-	    {
-			 String name = r.getString("NAME");
-			 String description = r.getString("DESCRIPTION");
-			 int id = r.getInt("ID");
-			 Blob picture = r.getBlob("PICTURE");
-			 byte[] pic = picture.getBytes(1, (int)picture.length());
-
-			 Category currentCategory = new Category(name, description, id, pic);
-			 resultSet.add(currentCategory);
-		 }
-		return resultSet;
+	@Override
+	public Category createBean(ResultSet r) throws Exception {
+		Category result = new Category();
+		result.setId(getId(r));
+		result.setName(getName(r));
+		result.setDescription(getDescription(r));
+		result.setPicture(getPicture(r));
+		return result;
 	}
-	
-	public List<CategoryBean> retrieveAll() throws Exception
-	{
-		Connection conn = ConnectionFactory.getConn();
-		
-		String query = "select * from " + TABLE_NAME;
-		PreparedStatement stmt = conn.prepareStatement(query);
-		ResultSet r = stmt.executeQuery();
-		
-		
-		ConnectionFactory.closeConn(r, stmt, conn);
-		return returnCatList(r);
-	}
-	
-	
 
 	public String getName(ResultSet r) throws Exception {
 		return r.getString("NAME");
 	}
 
-	public double getDescription(ResultSet r) throws Exception {
+	public String getDescription(ResultSet r) throws Exception {
 		return r.getString("DESCRIPTION");
 	}
 
@@ -85,7 +56,12 @@ public class CategoryDAO extends DAO{
 		return r.getInt("ID");
 	}
 
-	public int getPicture(ResultSet r) throws Exception {
+	public Blob getPicture(ResultSet r) throws Exception {
 		return r.getBlob("PICTURE");
+	}
+	
+	public static void main(String[] args) throws Exception {
+		CategoryDAO catDao = new CategoryDAO();
+		System.out.println(catDao.getAll().toString());
 	}
 }

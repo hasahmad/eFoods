@@ -1,132 +1,88 @@
-package model;
+package model.dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.List;
+import model.catalog.Item;
 
-public class ItemDAO extends DAO{
-	
-	public ItemDAO() {
+public class ItemDAO extends DAO<Item> {	
+	public ItemDAO() throws Exception {
 		super("ITEM");
+		
+		COLUMNS.put("name", "NAME");
+		COLUMNS.put("price", "PRICE");
+		COLUMNS.put("qty", "QTY");
+		COLUMNS.put("num", "NUMBER");
+		COLUMNS.put("id", "NUMBER");
+		COLUMNS.put("cid", "CATID");
 	}
 
-	public Item createItem(ResultSet r) throws Exception {
+	@Override
+	public String convertToTableName(String by) {
+		String result = COLUMNS.get("cid");
+
+		if (COLUMNS.containsKey(by) || COLUMNS.containsKey(by.toLowerCase()))
+		{
+			result = COLUMNS.get(by);
+		} 
+		else if (by.equals(COLUMNS.get("name"))) 
+		{
+			result = COLUMNS.get("name");
+		} 
+		else if (by.toLowerCase().equals("price") || by.equals(COLUMNS.get("price"))) 
+		{
+			result = COLUMNS.get("price");
+		} 
+		else if (by.toLowerCase().equals("quantity") || by.equals(COLUMNS.get("qty"))) 
+		{
+			result = COLUMNS.get("qty");
+		} 
+		else if (by.toLowerCase().equals("number") || by.equals(COLUMNS.get("num"))) 
+		{
+			result = COLUMNS.get("num");
+		} 
+		else if (by.equals(COLUMNS.get("cid"))) 
+		{
+			result = COLUMNS.get("cid");
+		} 
+		return result;
+	}
+	
+	@Override
+	public Item createBean(ResultSet r) throws Exception {
 		Item item = new Item();
 		item.setName(getName(r));
 		item.setQuantity(getQuantity(r));
 		item.setPrice(getPrice(r));
 		item.setNumber(getNumber(r));
+		item.setCatID(getCatID(r));
 		return item;
 	}
-
-	public void populateBeans() throws Exception {
-		Connection conn = ConnectionFactory.getConn();
-		List<Item> items = new ArrayList<>();
-		
-		String query = "select * from " + TABLE_NAME;
-		PreparedStatement stmt = conn.prepareStatement(query);
-		ResultSet r = stmt.executeQuery();
-
-		while (r.next()) {
-			Item i = createItem(r);
-			if (!items.contains(i)) {
-				items.add(i);
-			}
-		}
-		
-		ConnectionFactory.closeConn(r, stmt, conn);
-    }
 	
-	public List<Item> getItemsByCatID(int catID) throws Exception
-	{
-		Connection conn = ConnectionFactory.getConn();
-		List<Item> resultSet = new ArrayList<Item>();
-		
-		String query = "select * from " + TABLE_NAME + " where CATID = " + catID;
-		PreparedStatement stmt = conn.prepareStatement(query);
-		ResultSet r = stmt.executeQuery();
-		
-		while (r.next())
-		{
-			String name = r.getString("NAME");
-			double price = r.getDouble("PRICE");
-			int quantity = r.getInt("QUANTITY");
-			int number = r.getInt("NUMBER");
-			//int catID = r.getCatID("CATID");
-
-			Item currentItem = new Item(name, price, quantity, number);
-			resultSet.add(currentItem);
-		}
-		ConnectionFactory.closeConn(r, stmt, conn);
-		return resultSet;
+	public String getId(ResultSet r) throws Exception {
+		return r.getString(COLUMNS.get("cid"));
 	}
 	
-	
-	public List<Item> getItemsByName(String name) throws Exception
-	{
-		Connection conn = ConnectionFactory.getConn();
-		List<Item> resultSet = new ArrayList<Item>();
-		
-		String query = "select * from ROUMANI.ITEM where NAME like '%" + name + "%'";
-		PreparedStatement stmt = conn.prepareStatement(query);
-		ResultSet r = stmt.executeQuery();
-		
-		while (r.next())
-		{
-			String name = r.getString("NAME");
-			double price = r.getDouble("PRICE");
-			int quantity = r.getInt("QUANTITY");
-			int number = r.getInt("NUMBER");
-			//int catID = r.getCatID("CATID");
-
-			Item currentItem = new Item(name, price, quantity, number);
-			resultSet.add(currentItem);
-		}
-		ConnectionFactory.closeConn(r, stmt, conn);
-		return resultSet;
-	}
-	
-	public List<Item> getItemsByNumber(Int number) throws Exception
-	{
-		Connection conn = ConnectionFactory.getConn();
-		List<Item> resultSet = new ArrayList<Item>();
-		
-		String query = "select * from ROUMANI.ITEM where NUMBER = " + number;
-		PreparedStatement stmt = conn.prepareStatement(query);
-		ResultSet r = stmt.executeQuery();
-		
-		while (r.next())
-		{
-			String name = r.getString("NAME");
-			double price = r.getDouble("PRICE");
-			int quantity = r.getInt("QUANTITY");
-			int number = r.getInt("NUMBER");
-			//int catID = r.getCatID("CATID");
-
-			Item currentItem = new Item(name, price, quantity, number);
-			resultSet.add(currentItem);
-		}
-		ConnectionFactory.closeConn(r, stmt, conn);
-		return resultSet;
-	}
-	
-	
-
 	public String getName(ResultSet r) throws Exception {
-		return r.getString("NAME");
+		return r.getString(COLUMNS.get("name"));
 	}
 
 	public double getPrice(ResultSet r) throws Exception {
-		return r.getDouble("PRICE");
+		return r.getDouble(COLUMNS.get("price"));
 	}
 
 	public int getQuantity(ResultSet r) throws Exception {
-		return r.getInt("QUANTITY");
+		return r.getInt(COLUMNS.get("qty"));
 	}
 
-	public int getNumber(ResultSet r) throws Exception {
-		return r.getInt("NUMBER");
+	public String getNumber(ResultSet r) throws Exception {
+		return r.getString(COLUMNS.get("num"));
+	}
+	
+	public int getCatID(ResultSet r) throws Exception {
+		return r.getInt(COLUMNS.get("cid"));
+	}
+	
+	public static void main(String[] args) throws Exception {
+		ItemDAO itemDao = new ItemDAO();
+		System.out.println(itemDao.getAll().toString());
 	}
 }

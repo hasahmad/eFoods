@@ -34,59 +34,41 @@
 			<div class="container">
 				<section id="products-tabs">
 					<div class="tabs is-boxed" id="tabNav">
-						<ul>
-						    <li data-target="pane-1" id="1" class="is-active">
-						    	<a>
-							    	<span class="icon is-small"><i class="fa fa"></i></span>
-							    	<span>Cat 1</span>
-							    </a>
-						    </li>
-						    <li data-target="pane-2" id="2">
-						    	<a>
-							    	<span class="icon is-small"><i class="fa fa"></i></span>
-							    	<span>Cat 2</span>
-							    </a>
-						    </li>
-						    <li data-target="pane-3" id="3">
-						    	<a>
-							    	<span class="icon is-small"><i class="fa fa"></i></span>
-							    	<span>Cat 3</span>
-							    </a>
-						    </li>
-						    <li data-target="pane-4" id="4">
-						    	<a>
-							    	<span class="icon is-small"><i class="fa fa"></i></span>
-							    	<span>Cat 4</span>
-							    </a>
-						    </li>
-						</ul>
+						<c:if test="${!empty model}">
+							<ul>
+								<c:forEach items="${model.getCategories()}" var="cat" varStatus="loop">
+									<li data-target="pane-${loop.index+1}" id="${loop.index+1}" class="is-active">
+								    	<a>
+									    	<span class="icon is-small"><i class="fa fa"></i></span>
+									    	<span>${cat.name}</span>
+									    </a>
+								    </li>
+								</c:forEach>
+							</ul>
+						</c:if>
 					</div>
 					
-					<div class="tab-content">
-						<div class="tab-pane level" id="pane-1">
-							Cat Cat 1
+					<c:if test="${!empty model}">
+						<div class="tab-content">
+							<c:forEach items="${model.getCategories()}" var="cat" varStatus="loop">
+								<div class="tab-pane level" id="pane-${loop.index+1}">
+									${cat.name}
+								</div>
+							</c:forEach>
 						</div>
-						
-						<div class="tab-pane level" id="pane-2">
-							Cat Cat 2
-						</div>
-						
-						<div class="tab-pane level" id="pane-3">
-							Cat Cat 3
-						</div>
-						
-						<div class="tab-pane level" id="pane-4">
-							Cat Cat 4
-						</div>
-					</div>
+					</c:if>
 				</section>
 
 				<section id="page-products">
-					<jsp:include page="../includes/CatItemsCard.jspx">
-						<jsp:param name="catName" value="Cat 1" />
-						<jsp:param name="limit" value="4" />
-						<jsp:param name="products" value="${products}" />
-					</jsp:include>
+					<c:if test="${!empty model}">
+						<c:forEach items="${model.getCategories()}" var="cat" varStatus="loop">
+							<jsp:include page="../includes/CatItemsCard.jspx">
+								<jsp:param name="catName" value="${cat.name}" />
+								<jsp:param name="limit" value="4" />
+								<jsp:param name="products" value="${model.getFoodsBy('cid', cat.id, false)}" />
+							</jsp:include>
+						</c:forEach>
+					</c:if>
 				</section>
 			</div>
 		</main>

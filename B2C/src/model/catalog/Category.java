@@ -1,15 +1,17 @@
 package model.catalog;
 
+import java.sql.Blob;
+
 public class Category {
 	
 	private String name, description;
 	private int id;
-	private String picture;
+	private Blob picture;
 	
-	Category() {
+	public Category() {
 	}
-	
-	Category(String name, String description, int id, String picture) {
+
+	public Category(String name, String description, int id, Blob picture) {
 		setName(name);
 		setDescription(description);
 		setId(id);
@@ -40,11 +42,11 @@ public class Category {
 		this.id = id;
 	}
 	
-	public String getPicture() {
+	public Blob getPicture() {
 		return picture;
 	}
 	
-	public void setPicture(String picture) {
+	public void setPicture(Blob picture) {
 		this.picture = picture;
 	}	
 	
