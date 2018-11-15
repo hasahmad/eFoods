@@ -2,7 +2,10 @@ package ctrl.api;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,9 +14,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import model.Model;
+import model.catalog.Category;
 import model.catalog.Item;
 
 /**
@@ -41,27 +46,63 @@ public class Product extends HttpServlet {
 		
 		PrintWriter out = response.getWriter();
 		JsonObject json = new JsonObject();
+		JsonElement resultJson;
 		Model model = Model.getInstance();
 
 		String num = request.getParameter("num");
 		String cid = request.getParameter("cid");
+		String limit = request.getParameter("limit");
+		String byCat = request.getParameter("byCat");
+		
+		try {			
+			if (byCat != null) {
+				if (byCat.toLowerCase().equals("name")) {
+					Map<String, List<Item>> result = new HashMap<String, List<Item>>();
+					
+					for (Category cat: model.getCategories()) {
+						List<Item> items = new ArrayList<Item>();
+						for (Item item: model.getFoods()) {
+							if (cat.getId() == item.getCatID()) {
+								items.add(item);
+								result.put(cat.getName(), items);
+							}
+						}
+					}
+					resultJson = new Gson().toJsonTree(result);
+				} else {
+					Map<Category, List<Item>> result = new HashMap<Category, List<Item>>();
+					
+					for (Category cat: model.getCategories()) {
+						List<Item> items = new ArrayList<Item>();
+						for (Item item: model.getFoods()) {
+							if (cat.getId() == item.getCatID()) {
+								items.add(item);
+								result.put(cat, items);
+							}
+						}
+					}
+					resultJson = new Gson().toJsonTree(result);
+				}
+			} else {
+				List<Item> result = model.getFoods();			
 
-//		json.addProperty("prefix", prefix);
-//		json.addProperty("minGpa", minGpa);
-//		json.addProperty("sortBy", sortBy);
-		try {
-			List<Item> result = model.getFoods();
-			if (num != null) 
-			{
-				result = model.getFoodsBy("num", num, false);
-			}
-			else if (cid != null) 
-			{
-				result = model.getFoodsBy("cid", cid, false);
+				if (num != null) 
+				{
+					result = model.getFoodsBy("num", num, false);
+				}
+				else if (cid != null) 
+				{
+					result = model.getFoodsBy("cid", cid, false);
+				}
+				
+				if (limit != null) {
+					int l = Integer.parseInt(limit);
+					result = result.subList(0, l);
+				}
+				resultJson = new Gson().toJsonTree(result);
 			}
 
-			String resultJson = new Gson().toJson(result);
-			json.addProperty("data", resultJson);
+			json.add("data", resultJson);
 			json.addProperty("status", 1);
 		} catch (Exception e) {
 			json.addProperty("status", 0);

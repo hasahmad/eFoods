@@ -14,22 +14,26 @@
 		
 		<div class="card-content">
 			<div class="content">
-				<c:forEach items="${param.products}" var="product" varStatus="loop">
-					<c:choose>
-						<c:when test="${param.limit gt 0}">
-							<c:if test="${loop.index le param.limit}">
-								<jsp:include page="../includes/Item.jspx">
-									<jsp:param name="product" value="${product}" />
-								</jsp:include>
-							</c:if>
-						</c:when>
-						<c:otherwise>
-							<jsp:include page="../includes/Item.jspx">
-								<jsp:param name="product" value="${product}" />
-							</jsp:include>
-						</c:otherwise>
-					</c:choose>
-				</c:forEach>
+				<div class="columns">
+					<c:forEach items="${param.products}" var="product" varStatus="loop">
+						<div class="column">
+							<c:choose>
+								<c:when test="${param.limit gt 0}">
+									<c:if test="${loop.index le param.limit}">
+										<jsp:include page="../includes/Item.jspx">
+											<jsp:param name="product" value="${product.name}" />
+										</jsp:include>
+									</c:if>
+								</c:when>
+								<c:otherwise>
+									<jsp:include page="../includes/Item.jspx">
+										<jsp:param name="product" value="${product}" />
+									</jsp:include>
+								</c:otherwise>
+							</c:choose>
+						</div>
+					</c:forEach>
+				</div>
 			</div>
 		</div>
 		

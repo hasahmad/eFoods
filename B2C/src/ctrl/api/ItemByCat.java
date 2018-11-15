@@ -1,4 +1,4 @@
-package ctrl;
+package ctrl.api;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -7,19 +7,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import model.Model;
-
 /**
- * Servlet implementation class Home
+ * Servlet implementation class ItemByCat
  */
-@WebServlet("/Home")
-public class Home extends HttpServlet {
+@WebServlet("/ItemByCat")
+public class ItemByCat extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
+       
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public Home() {
+    public ItemByCat() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -29,22 +27,7 @@ public class Home extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		String addToCard = request.getParameter("addToCard");
-		String getFoodByCat = request.getParameter("getFoodByCat");
-		
-		Model model = Model.getInstance();
-		request.setAttribute("model", model);
-
-		if (getFoodByCat == null) {
-			try {
-//				System.out.println(model.getCategories().toArray());
-			} catch (Exception e) {
-				request.setAttribute("error", e.getMessage());
-			}
-		}
-		
-		
-		request.getRequestDispatcher("/WEB-INF/pages/Home.jspx").forward(request, response);
+		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
 	/**

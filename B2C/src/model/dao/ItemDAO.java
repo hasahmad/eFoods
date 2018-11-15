@@ -1,47 +1,53 @@
 package model.dao;
 
 import java.sql.ResultSet;
+import java.util.HashMap;
+import java.util.Map;
+
 import model.catalog.Item;
 
-public class ItemDAO extends DAO<Item> {	
+public class ItemDAO extends DAO<Item> {
+	private static Map<String, String[]> COLUMNS;
+	
 	public ItemDAO() throws Exception {
 		super("ITEM");
+		COLUMNS = new HashMap<String, String[]>();
 		
-		COLUMNS.put("name", "NAME");
-		COLUMNS.put("price", "PRICE");
-		COLUMNS.put("qty", "QTY");
-		COLUMNS.put("num", "NUMBER");
-		COLUMNS.put("id", "NUMBER");
-		COLUMNS.put("cid", "CATID");
+		COLUMNS.put("qty", new String[]{"QTY", "num"});
+		COLUMNS.put("name", new String[]{"NAME", "str"});
+		COLUMNS.put("price", new String[]{"PRICE", "num"});
+		COLUMNS.put("id", new String[]{"NUMBER", "str"});
+		COLUMNS.put("num", new String[]{"NUMBER", "str"});
+		COLUMNS.put("cid", new String[]{"CATID", "num"});
 	}
 
 	@Override
-	public String convertToTableName(String by) {
-		String result = COLUMNS.get("cid");
+	public String convertToColumnName(String by) {
+		String result = COLUMNS.get("cid")[0];
 
 		if (COLUMNS.containsKey(by) || COLUMNS.containsKey(by.toLowerCase()))
 		{
-			result = COLUMNS.get(by);
+			result = COLUMNS.get(by)[0];
 		} 
-		else if (by.equals(COLUMNS.get("name"))) 
+		else if (by.equals(COLUMNS.get("name")[0])) 
 		{
-			result = COLUMNS.get("name");
+			result = COLUMNS.get("name")[0];
 		} 
-		else if (by.toLowerCase().equals("price") || by.equals(COLUMNS.get("price"))) 
+		else if (by.toLowerCase().equals("price") || by.equals(COLUMNS.get("price")[0])) 
 		{
-			result = COLUMNS.get("price");
+			result = COLUMNS.get("price")[0];
 		} 
-		else if (by.toLowerCase().equals("quantity") || by.equals(COLUMNS.get("qty"))) 
+		else if (by.toLowerCase().equals("quantity") || by.equals(COLUMNS.get("qty")[0])) 
 		{
-			result = COLUMNS.get("qty");
+			result = COLUMNS.get("qty")[0];
 		} 
-		else if (by.toLowerCase().equals("number") || by.equals(COLUMNS.get("num"))) 
+		else if (by.toLowerCase().equals("number") || by.toLowerCase().equals("num") || by.equals(COLUMNS.get("id")[0])) 
 		{
-			result = COLUMNS.get("num");
+			result = COLUMNS.get("id")[0];
 		} 
-		else if (by.equals(COLUMNS.get("cid"))) 
+		else if (by.toLowerCase().equals(COLUMNS.get("cid")[0])) 
 		{
-			result = COLUMNS.get("cid");
+			result = COLUMNS.get("cid")[0];
 		} 
 		return result;
 	}
@@ -57,30 +63,35 @@ public class ItemDAO extends DAO<Item> {
 		return item;
 	}
 	
+	@Override
+	public Map<String, String[]> getColumns() {
+		return COLUMNS;
+	}
+	
 	public String getId(ResultSet r) throws Exception {
-		return r.getString(COLUMNS.get("cid"));
+		return r.getString(COLUMNS.get("cid")[0]);
 	}
 	
 	public String getName(ResultSet r) throws Exception {
-		return r.getString(COLUMNS.get("name"));
+		return r.getString(COLUMNS.get("name")[0]);
 	}
 
 	public double getPrice(ResultSet r) throws Exception {
-		return r.getDouble(COLUMNS.get("price"));
+		return r.getDouble(COLUMNS.get("price")[0]);
 	}
 
 	public int getQuantity(ResultSet r) throws Exception {
-		return r.getInt(COLUMNS.get("qty"));
+		return r.getInt(COLUMNS.get("qty")[0]);
 	}
 
 	public String getNumber(ResultSet r) throws Exception {
-		return r.getString(COLUMNS.get("num"));
+		return r.getString(COLUMNS.get("id")[0]);
 	}
-	
+
 	public int getCatID(ResultSet r) throws Exception {
-		return r.getInt(COLUMNS.get("cid"));
+		return r.getInt(COLUMNS.get("cid")[0]);
 	}
-	
+
 	public static void main(String[] args) throws Exception {
 		ItemDAO itemDao = new ItemDAO();
 		System.out.println(itemDao.getAll().toString());

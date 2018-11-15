@@ -64,7 +64,7 @@
 						<c:forEach items="${model.getCategories()}" var="cat" varStatus="loop">
 							<jsp:include page="../includes/CatItemsCard.jspx">
 								<jsp:param name="catName" value="${cat.name}" />
-								<jsp:param name="limit" value="4" />
+								<jsp:param name="limit" value="3" />
 								<jsp:param name="products" value="${model.getFoodsBy('cid', cat.id, false)}" />
 							</jsp:include>
 						</c:forEach>

@@ -14,7 +14,7 @@
 				</div>
 				
 				<div class="media-content">
-					<p class="title is-4">${params.product.name}</p>
+					<p class="title is-4"><pre>${param.product}</pre></p>
 					<p class="subtitle is-6">${params.product.number}</p>
 				</div>
 			</div>

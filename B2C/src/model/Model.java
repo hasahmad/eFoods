@@ -21,7 +21,7 @@ public class Model {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public static Model getInstance() {
 		if (instance == null) {
 			instance = new Model();
@@ -30,7 +30,12 @@ public class Model {
 	}
 	
 	public List<Item> getFoods() throws Exception {
-		return itemDao.getAll();
+		return getFoods("0");
+	}
+	
+	public List<Item> getFoods(String limit) throws Exception {
+		int l = Integer.parseInt(limit);
+		return itemDao.getAll(l);
 	}
 	
 	public Item getFood(String val) throws Exception {
@@ -46,8 +51,12 @@ public class Model {
 	}
 	
 	public List<Item> getFoodsBy(String by, String val, Boolean like) throws Exception {
-		System.out.println(itemDao.getAllBy(by, val, like).toString());
-		return itemDao.getAllBy(by, val, like);
+		return getFoodsBy(by, val, like, "0");
+	}
+	
+	public List<Item> getFoodsBy(String by, String val, Boolean like, String limit) throws Exception {
+		int l = Integer.parseInt(limit);
+		return itemDao.getAllBy(by, val, like, l);
 	}
 	
 	public List<Category> getCategories() throws Exception {
@@ -58,4 +67,14 @@ public class Model {
 		return catDao.findOne(cat);
 	}
 
+	
+	public static void main(String[] args) {
+		Model model = Model.getInstance();
+		try {
+			System.out.println(model.getCategories().toString());
+			System.out.println(model.getFoods().toString());
+		} catch(Exception e) {
+			System.out.println("ERROR: " + e.getMessage());
+		}
+	}
 }

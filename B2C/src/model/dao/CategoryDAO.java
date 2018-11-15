@@ -2,36 +2,54 @@ package model.dao;
 
 import java.sql.Blob;
 import java.sql.ResultSet;
+import java.util.HashMap;
+import java.util.Map;
 
 import model.catalog.Category;
 
 public class CategoryDAO extends DAO<Category> {
+	private static Map<String, String[]> COLUMNS;
 
 	public CategoryDAO() throws Exception {
 		super("CATEGORY");
+		COLUMNS = new HashMap<String, String[]>();
 		
-		COLUMNS.put("name", "NAME");
-		COLUMNS.put("desc", "DESCRIPTION");
-		COLUMNS.put("pic", "PICTURE");
-		COLUMNS.put("id", "ID");
+		COLUMNS.put("name", new String[]{"NAME", "str"});
+		COLUMNS.put("desc", new String[]{"DESCRIPTION", "str"});
+		COLUMNS.put("pic", new String[]{"PICTURE", "str"});
+		COLUMNS.put("id", new String[]{"ID", "num"});
 	}
 
 	@Override
-	public String convertToTableName(String by) {
-		String result = COLUMNS.get("id");
+	public String convertToColumnName(String by) {
+		String result = COLUMNS.get("id")[0];
 
-		if (COLUMNS.containsKey(by) || COLUMNS.containsKey(by.toLowerCase())) {
-			result = COLUMNS.get(by);
-		} else if (by.equals(COLUMNS.get("name"))) {
-			result = COLUMNS.get("name");
-		} else if (by.toLowerCase().equals("description") || by.equals(COLUMNS.get("desc"))) {
-			result = COLUMNS.get("desc");
-		} else if (by.toLowerCase().equals("picture") || by.equals(COLUMNS.get("pic"))) {
-			result = COLUMNS.get("pic");
-		} else if (by.equals(COLUMNS.get("id"))) {
-			result = COLUMNS.get("id");
+		if (COLUMNS.containsKey(by) || COLUMNS.containsKey(by.toLowerCase())) 
+		{
+			result = COLUMNS.get(by)[0];
+		} 
+		else if (by.equals(COLUMNS.get("name")[0])) 
+		{
+			result = COLUMNS.get("name")[0];
+		} 
+		else if (by.toLowerCase().equals("description") || by.equals(COLUMNS.get("desc")[0])) 
+		{
+			result = COLUMNS.get("desc")[0];
+		} 
+		else if (by.toLowerCase().equals("picture") || by.equals(COLUMNS.get("pic")[0])) 
+		{
+			result = COLUMNS.get("pic")[0];
+		} 
+		else if (by.equals(COLUMNS.get("id")[0])) 
+		{
+			result = COLUMNS.get("id")[0];
 		} 
 		return result;
+	}
+	
+	@Override
+	public Map<String, String[]> getColumns() {
+		return COLUMNS;
 	}
 
 	@Override
@@ -45,19 +63,19 @@ public class CategoryDAO extends DAO<Category> {
 	}
 
 	public String getName(ResultSet r) throws Exception {
-		return r.getString("NAME");
+		return r.getString(COLUMNS.get("name")[0]);
 	}
 
 	public String getDescription(ResultSet r) throws Exception {
-		return r.getString("DESCRIPTION");
+		return r.getString(COLUMNS.get("desc")[0]);
 	}
 
 	public int getId(ResultSet r) throws Exception {
-		return r.getInt("ID");
+		return r.getInt(COLUMNS.get("id")[0]);
 	}
 
 	public Blob getPicture(ResultSet r) throws Exception {
-		return r.getBlob("PICTURE");
+		return r.getBlob(COLUMNS.get("pic")[0]);
 	}
 	
 	public static void main(String[] args) throws Exception {
