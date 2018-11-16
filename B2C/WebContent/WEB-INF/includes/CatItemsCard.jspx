@@ -8,19 +8,19 @@
 	<div class="card">
 		<header class="card-header">
 			<p class="card-header-title">${param.catName}</p>
-			<a class="card-header-icon secondary" style="border-style: solid; border-width: 1px;" aria-label="more options">
+			<a class="card-header-icon secondary" style="border-style: solid; border-width: 1px;" aria-label="more options" id="view-cat-item-${param.catId}">
 				<strong>View All</strong>
 			</a>
 		</header>
 		
 		<div class="card-content">
 			<div class="content">
-				<div class="columns">
+				<div class="columns is-multiline">
 					<c:forEach var="item" items="${items}" varStatus="loop">
-						<div class="column">
-							<c:choose>
-								<c:when test="${param.limit gt 0}">
-									<c:if test="${loop.index le param.limit}">
+						<c:choose>
+							<c:when test="${param.limit gt 0}">
+								<c:if test="${loop.index le param.limit}">
+									<div class="column is-3">
 										<jsp:include page="Item.jspx">
 											<jsp:param name="name" value="${item.name}" />
 											<jsp:param name="number" value="${item.number}" />
@@ -28,9 +28,11 @@
 											<jsp:param name="unit" value="${item.quantity}"/>
 											<jsp:param name="catId" value="${item.catID}"/>
 										</jsp:include>
-									</c:if>
-								</c:when>
-								<c:otherwise>
+									</div>
+								</c:if>
+							</c:when>
+							<c:otherwise>
+								<div class="column is-3">
 									<jsp:include page="Item.jspx">
 										<jsp:param name="name" value="${item.name}" />
 											<jsp:param name="number" value="${item.number}" />
@@ -38,9 +40,9 @@
 											<jsp:param name="unit" value="${item.quantity}"/>
 											<jsp:param name="catId" value="${item.catID}"/>
 									</jsp:include>
-								</c:otherwise>
-							</c:choose>
-						</div>
+								</div>
+							</c:otherwise>
+						</c:choose>
 					</c:forEach>
 				</div>
 			</div>

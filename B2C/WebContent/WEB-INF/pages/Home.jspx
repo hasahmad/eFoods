@@ -38,7 +38,7 @@
 						<c:if test="${!empty cats}">
 							<ul>
 								<c:forEach items="${cats}" var="cat" varStatus="loop">
-									<li data-target="pane-${loop.index+1}" id="${loop.index+1}" class="is-active">
+									<li data-target="pane-${cat.id}" id="cat-${cat.id}" class="is-active">
 								    	<a>
 									    	<span class="icon is-small"><i class="fa fa"></i></span>
 									    	<span>${cat.name}</span>
@@ -49,11 +49,16 @@
 						</c:if>
 					</div>
 					
-					<c:if test="${!empty cats}">
+					<c:if test="${!empty catsWithFoods}">
 						<div class="tab-content">
-							<c:forEach items="${cats}" var="cat" varStatus="loop">
-								<div class="tab-pane level" id="pane-${loop.index+1}">
-									${cat.name}
+							<c:forEach items="${catsWithFoods}" var="cat" varStatus="loop">
+								<div class="tab-pane level" id="pane-${cat.key.id}">
+									<c:set var="items" value="${cat.value}" scope="request" />
+									<jsp:include page="../includes/CatItemsCard.jspx">
+										<jsp:param name="catName" value="${cat.key.name}" />
+										<jsp:param name="catId" value="${cat.key.id}" />
+										<jsp:param name="items" value="${cat.value}" />
+									</jsp:include>
 								</div>
 							</c:forEach>
 						</div>
@@ -63,11 +68,14 @@
 				<section id="page-products">
 					<c:if test="${!empty catsWithFoods}">
 						<c:forEach items="${catsWithFoods}" var="cat" varStatus="loop">
+							<c:set var="items" value="${cat.value}" scope="request" />
 							<jsp:include page="../includes/CatItemsCard.jspx">
 								<jsp:param name="catName" value="${cat.key.name}" />
+								<jsp:param name="catId" value="${cat.key.id}" />
 								<jsp:param name="limit" value="3" />
 								<jsp:param name="items" value="${cat.value}" />
 							</jsp:include>
+							<br />
 						</c:forEach>
 					</c:if>
 				</section>

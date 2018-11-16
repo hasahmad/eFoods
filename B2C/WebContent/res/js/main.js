@@ -3,13 +3,15 @@
  * Bulma
  */
 (function() {
-    var burger = document.querySelector('.burger');
-    var menu = document.querySelector('#'+burger.dataset.target);
+    let burger = document.querySelector('.burger');
+    let menu = document.querySelector('#'+burger.dataset.target);
     burger.addEventListener('click', function() {
         burger.classList.toggle('is-active');
         menu.classList.toggle('is-active');
     });
-    
+
+    onClickViewCatItem();
+
     window.onload = onLoadActions;
 })();
 
@@ -93,7 +95,7 @@ document.querySelectorAll("#tabNav li").forEach(function(navEl) {
 });
 
 function toggleTab(selectedNav, targetId) {
-  var navEls = document.querySelectorAll("#tabNav li");
+  let navEls = document.querySelectorAll("#tabNav li");
   navEls.forEach(function(navEl) {
     if (navEl.id == selectedNav) {
       navEl.classList.add("is-active");
@@ -108,7 +110,7 @@ function toggleTab(selectedNav, targetId) {
 }
 
 function toggleTabContent(targetId) {
-	var tabs = document.querySelectorAll(".tab-pane");
+	let tabs = document.querySelectorAll(".tab-pane");
 
 	tabs.forEach(function(tab) {
 		if (tab.id == targetId) {
@@ -117,6 +119,26 @@ function toggleTabContent(targetId) {
 			tab.style.display = "none";
 		}
 	});
+}
+
+function onClickViewCatItem() {
+	let viewCatItemsBtns = document.querySelectorAll('a[id^="view-cat-item-"]');
+
+	viewCatItemsBtns.forEach(function (el) {
+		el.addEventListener('click', () => {
+			
+			toggleElemBy('id', 'page-products', true);
+			viewCatItemsBtns.forEach(function (el) {
+				toggleElemBy('id', el.id, true);
+			});
+			toggleElemBy('id', 'products-tabs', false);
+			
+			let catId = el.id.split("view-cat-item-")[1];
+			document.getElementById("cat-" + catId).click();
+			
+		});
+	});
+			
 }
 
 
