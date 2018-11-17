@@ -1,3 +1,8 @@
+var appURL = location.href;
+var appPath = location.pathname;
+var appRootPath = "/" + appPath.split("/")[1] + "/";
+
+
 /**
  * 
  * Bulma
@@ -121,6 +126,13 @@ function toggleTabContent(targetId) {
 	});
 }
 
+function hideAllCatsViewAllLink() {
+	let viewCatItemsBtns = document.querySelectorAll('a[id^="view-cat-item-"]');
+	viewCatItemsBtns.forEach(function (el) {
+		toggleElemBy('id', el.id, true);
+	});
+}
+
 function onClickViewCatItem() {
 	let viewCatItemsBtns = document.querySelectorAll('a[id^="view-cat-item-"]');
 
@@ -128,17 +140,94 @@ function onClickViewCatItem() {
 		el.addEventListener('click', () => {
 			
 			toggleElemBy('id', 'page-products', true);
-			viewCatItemsBtns.forEach(function (el) {
-				toggleElemBy('id', el.id, true);
-			});
 			toggleElemBy('id', 'products-tabs', false);
+			hideAllCatsViewAllLink();
 			
 			let catId = el.id.split("view-cat-item-")[1];
 			document.getElementById("cat-" + catId).click();
 			
 		});
 	});
-			
+}
+
+
+function onClickAddToCartBtn(el) {
+	let productId = el.id.split("product-")[1];
+	let addToCartUrl = appRootPath + 'Api/Cart';
+
+	let qs = "addToCart=" + productId;
+	doSimpleAjax(addToCartUrl, qs, addToCartResult);
+}
+
+function addToCartResult(request)
+{
+	// TODO: increase num on top cart btn
+	console.log('addeded to cart', request.responseText);
+}
+
+
+function updateQty(el) {
+	console.log("updating item qty");
+	let cartUrl = appRootPath + 'Api/Cart';
+	let productNum = el.parentNode.parentNode.id.split('p-')[1];
+	let productQty = document.getElementById("qty-" + productNum).value;
+	
+	console.log(productNum);
+
+	let qs = "updateQty=" + productNum + "&qty=" + productQty;
+	doSimpleAjax(cartUrl, qs, updateQtyResult);
+}
+
+function updateQtyResult(request)
+{
+	// TODO: increase num on top cart btn
+	console.log('updated qty in cart', request.responseText);
+	updatePage();
+}
+
+
+function deleteCartItem(el) {
+	let cartUrl = appRootPath + 'Api/Cart';
+	let productNum = el.parentNode.parentNode.id.split('p-')[1];
+
+	let qs = "removeItem=" + productNum;
+	doSimpleAjax(cartUrl, qs, deleteCartItemResult);	
+}
+
+function deleteCartItemResult(request)
+{
+	let req = request.responseText;
+	updatePage();
+	
+	if (req != null && req.action == "REMOVE") {
+		let el = document.getElementById('p-' + req.actionReq);
+		console.log(el);
+		console.log(el.parentNode.parentNode);
+		let i = el.parentNode.parentNode.rowIndex;
+	    document.getElementById("cartItems").deleteRow(i);
+	    console.log('deleted from cart', req);
+	}
+}
+
+function doCheckout() {
+	
+}
+
+function updatePage() {
+	location.reload(true);
+}
+
+function gotoHomePage() {
+	location.href = appRootPath;
+}
+
+
+function doSimpleAjax(address, data, handler)
+{
+    var request = new XMLHttpRequest();
+    request.onreadystatechange = function() {handler(request);};
+    request.open("GET", (address + "?" + data), true);
+    request.send(null);
 }
 
 

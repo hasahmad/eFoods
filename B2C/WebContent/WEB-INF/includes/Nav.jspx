@@ -28,7 +28,7 @@
 				<div class="navbar-end">
 					<div class="navbar-item">
 						<div class="buttons">
-							<a class="button is-primary"> <strong>Cart</strong></a> 
+							<a class="button is-primary" href="${param.rootURLPath}/Cart"> <strong>Cart</strong></a> 
 							<a class="button is-light">Log in</a>
 						</div>
 					</div>

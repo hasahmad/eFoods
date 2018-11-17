@@ -4,6 +4,9 @@
   <welcome-file-list>
     <welcome-file>Home</welcome-file>
   </welcome-file-list>
+  <listener>
+    <listener-class>analytics.Monitor</listener-class>
+  </listener>
   <error-page>
     <error-code>404</error-code>
     <location>/WEB-INF/pages/Error404.jspx</location>

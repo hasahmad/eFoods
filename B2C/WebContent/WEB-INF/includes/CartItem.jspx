@@ -8,22 +8,18 @@
 	<div class="card">
 		<div class="card-content">
 			<div class="">
-				<div class="media-left">
-					<figure class="image is-48x48">
-						<img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image" />
-					</figure>
-				</div>
-				<br />
 				<div class="media-content">
-					<p class="title is-6">${param.name}</p>
-					<p class="subtitle is-6">${param.number}</p>
+					<p>
+						<span class="title is-6">${param.name}</span> - 
+						<span class="subtitle is-6">${param.number}</span>
+					</p>
 				</div>
 			</div>
 			<div class="content">
 				<fmt:setLocale value = "en_US"/>
 				<fmt:formatNumber type="currency" value="${param.price}"></fmt:formatNumber>
-				<br />
-				<button id="product-${param.number}" class="button button-info has-text-centered add-to-cart" onclick="onClickAddToCartBtn(this)">Add to cart</button>
+				<p>Total price: <fmt:formatNumber type="currency" value="${param.price}"></fmt:formatNumber></p>
+				<p>Quantity: <p class="">${param.qty}</p></p>
 			</div>
 		</div>
 		

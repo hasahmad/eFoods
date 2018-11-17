@@ -89,7 +89,7 @@ public class Product extends HttpServlet {
 			json.addProperty("status", 0);
 			json.addProperty("data", e.getMessage());
 		}
-		
+
 		out.print(json.toString());
 	}
 

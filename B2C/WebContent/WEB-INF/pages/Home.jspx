@@ -33,6 +33,10 @@
 			  </div>
 			</section>
 			<div class="container">
+				<section>
+					<c:set var="error" value="${error}" scope="request" />
+					<jsp:include page="../includes/Error.jspx" />
+				</section>
 				<section id="products-tabs">
 					<div class="tabs is-boxed" id="tabNav">
 						<c:if test="${!empty cats}">

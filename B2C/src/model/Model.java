@@ -46,7 +46,11 @@ public class Model {
 	}
 	
 	public Item getFoodBy(String by, String val) throws Exception {
-		return itemDao.findOneBy(by, val, false);
+		return this.getFoodBy(by, val, false);
+	}
+	
+	public Item getFoodBy(String by, String val, Boolean like) throws Exception {
+		return itemDao.findOneBy(by, val, like);
 	}
 
 	public List<Item> getFoodsBy(String by, String val) throws Exception {

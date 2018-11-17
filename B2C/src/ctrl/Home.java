@@ -29,11 +29,9 @@ public class Home extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		String addToCard = request.getParameter("addToCard");
 		String getFoodByCat = request.getParameter("getFoodByCat");
-		
+
 		Model model = Model.getInstance();
-		request.setAttribute("model", model);
 
 		if (getFoodByCat == null) {
 			try {

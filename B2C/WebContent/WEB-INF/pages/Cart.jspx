@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt" version="2.0">
+	<jsp:directive.page contentType="text/html; charset=UTF-8"
+		pageEncoding="UTF-8" session="false" />
+	<jsp:output doctype-root-element="html"
+		doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
+		doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
+		omit-xml-declaration="true" />
+	<![CDATA[<!DOCTYPE html>]]>
+	<html xmlns="http://www.w3.org/1999/xhtml">
+<c:set var="rootURLPath" value="${pageContext.request.contextPath}"></c:set>
+
+<jsp:include page="../includes/Header.jspx">
+	<jsp:param name="title" value="Foods R Us!" />
+	<jsp:param name="rootURLPath" value="${rootURLPath}" />
+</jsp:include>
+
+<body>
+	<jsp:include page="../includes/Nav.jspx">
+		<jsp:param name="rootURLPath" value="${rootURLPath}" />
+	</jsp:include>
+	
+	<fmt:setLocale value = "en_US"/>
+	
+	<main class="bd-main">
+	<section class="hero is-small is-primary is-bold">
+		<div class="hero-body">
+			<div class="container">
+				<h1 class="title">Shopping Cart</h1>
+			</div>
+		</div>
+	</section>
+	<div class="container">
+		<section>
+			<c:set var="error" value="${error}" scope="request" />
+			<jsp:include page="../includes/Error.jspx" />
+		</section>
+		<section id="cart-products">
+			<c:if test="${!empty order.getItems()}">
+				<table
+					class="table is-bordered is-striped is-hoverable is-fullwidth"
+					id="cartItems">
+					<thead>
+						<tr>
+							<th>Product Number</th>
+							<th>Product Name</th>
+							<th>Price</th>
+							<th>Total Price</th>
+							<th>Quantity</th>
+							<th>Actions</th>
+						</tr>
+					</thead>
+					<tbody>
+						<c:forEach items="${order.getItems()}" var="product"
+							varStatus="loop">
+							<tr id="p-${product.number}">
+								<td>${product.number}</td>
+								<td>${product.name}</td>
+								<td><fmt:formatNumber type="currency" value="${product.price}"></fmt:formatNumber></td>
+								<td>${product.totalPrice}</td>
+								<td><input type="text" class="input" placeholder=""
+									id="qty-${product.number}" value="${product.quantity}" /></td>
+								<td>
+									<button style="margin-right: 10px;" class="button is-primary" onclick="updateQty(this)">Update</button>
+									
+									<button style="" class="button is-danger" onclick="deleteCartItem(this)">Delete</button>
+								</td>
+							</tr>
+						</c:forEach>
+					</tbody>
+				</table>
+				
+				<div class="has-text-right has-background-light" style="margin-bottom: 15px; padding: 10px;">
+					<p class="is-size-3 is-capitalized has-text-weight-bold">Summary</p>
+					<p class="is-size-4">
+						<strong>Total: </strong>
+						<span><fmt:formatNumber type="currency" value="${order.total}"></fmt:formatNumber></span>
+					</p>
+					<p class="is-size-4">
+						<strong>Shipping: </strong>
+						<span><fmt:formatNumber type="currency" value="${order.shipping}"></fmt:formatNumber></span>
+					</p>
+					<p class="is-size-4">
+						<strong>HST (incl. Shipping): </strong>
+						<span><fmt:formatNumber type="currency" value="${order.HST}"></fmt:formatNumber></span>
+					</p>
+					<p class="is-size-4 is-capitalized">
+						<strong>Grand Total: </strong>
+						<span><fmt:formatNumber type="currency" value="${order.grandTotal}"></fmt:formatNumber></span>
+					</p>
+				</div>
+
+				<div class="field is-grouped" style="justify-content: flex-end; margin-bottom: 10px;">
+					<div class="control">
+						<button class="button is-primary" onclick="updatePage()">Update</button>
+					</div>
+					<div class="control">
+						<button class="button is-link" onclick="gotoHomePage()">Continue Shopping</button>
+					</div>
+					
+					<div class="control">
+						<button class="button is-info" onclick="doCheckout()">Checkout</button>
+					</div>
+				</div>
+			</c:if>
+			
+			<c:if test="${empty order.getItems()}">
+				<p class="is-size-3 has-text-centered is-capitalized has-text-weight-bold">Empty Cart</p>
+			</c:if>
+		</section>
+	</div>
+	</main>
+
+	<jsp:include page="../includes/Footer.jspx">
+		<jsp:param name="rootURLPath" value="${rootURLPath}" />
+	</jsp:include>
+</body>
+	</html>
+</jsp:root>
