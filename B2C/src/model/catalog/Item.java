@@ -65,20 +65,20 @@ public class Item {
 		int qty = Integer.parseInt(quantity);
 		this.setQuantity(qty);
 	}
-	
+
 	@XmlAttribute(name="number")
 	public String getNumber() {
 		return number;
 	}
-	
+
 	public void setNumber(String number) {
 		this.number = number;
 	}
-	
+
 	public int getCatID() {
 		return catID;
 	}
-	
+
 	public void setCatID(int catID) {
 		this.catID = catID;
 	}
