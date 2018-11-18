@@ -104,4 +104,20 @@ public class Item {
 	public String toString() {
 		return String.format("Name: %s | Price: %s | Quantity: %s | Number: %s | CatId: %s \n", name, price, quantity, number, catID);
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) return true;
+		if (obj == null) return false;
+		if (!(obj instanceof Item)) return false;
+		
+		Item other = (Item) obj;
+		if (!this.number.equals(other.number)) {
+			return false;
+		}
+		
+		return true;
+	}
+	
+	
 }

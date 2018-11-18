@@ -4,8 +4,11 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.Map;
 
 import java.io.File;
@@ -37,6 +40,8 @@ import model.Account;
 
 public class Utils {
 	
+	public static final String AUTH_URL = "https://www.eecs.yorku.ca/~roumani/servers/auth/oauth.cgi";
+	
 	public static String doHttpGET(Map<String, String> params, String Url, String contentType) throws Exception 
 	{
 		StringBuilder result = new StringBuilder();
@@ -67,6 +72,12 @@ public class Utils {
 		con.disconnect();
 		
 		return response.toString();
+	}
+	
+	public static void doAuth(String username, String pass, String back) throws Exception {
+		HttpURLConnection connection = (HttpURLConnection) new URL(AUTH_URL + "?back=" + back).openConnection();
+		String encoded = Base64.getEncoder().encodeToString((username+":"+pass).getBytes(StandardCharsets.UTF_8));  //Java 8
+		connection.setRequestProperty("Authorization", "Basic "+encoded);
 	}
 	
 	public static void renderXsltTHtml(String xml, InputStream xslIs, Writer out) throws Exception {

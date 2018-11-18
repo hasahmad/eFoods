@@ -49,15 +49,15 @@ public class AuthFilter implements Filter {
 		Account user = (Account) s.getAttribute("AUTH");
 
 		String path = url.replaceAll("/eFoods/", "");
- 		
+
  		String userName = request.getParameter("name");
 		String username = request.getParameter("user");
-		
+
 		if (userName != null && username != null) {
 			user.setName(userName);
 			user.setUsername(username);
 		}
-		 
+
  		if (path.contains("Checkout") || path.contains("Login") || 
  				path.contains("PurchaseOrders") || 
  				req.getParameter("doLogin") != null) 

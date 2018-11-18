@@ -48,30 +48,20 @@ public class Checkout extends HttpServlet {
 		HttpSession s = request.getSession();
 		Account user = (Account) s.getAttribute("AUTH");
 		Order order = (Order) s.getAttribute("order");
-
-		String userName = request.getParameter("name");
-		String username = request.getParameter("user");
-		String userHash = request.getParameter("hash");
 		
-		response.setContentType("text/xml");
-		Writer out = response.getWriter();
-		StringWriter sw = new StringWriter();
-		sw.write("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>");
-
-		if (userName != null && username != null) {
-			user.setName(userName);
-			user.setUsername(username);
-		}
+		String confirm = request.getParameter("confirm");
+		String cancel = request.getParameter("cancel");
 
 		ServletContext context = getServletContext();
 		String poPath = context.getRealPath("/POs");
-
-		if (!Utils.isValidUser(user)) {
-			String redirectUrl = "https://www.eecs.yorku.ca/~roumani/servers/auth/oauth.cgi";
-			String params = "?back=" + request.getRequestURL();
-			response.sendRedirect(redirectUrl + params);
-		} else {
-			if(order.getItems().size() > 0) {
+		
+		if (cancel != null) {
+			String redirectUrl = "Cart";
+			response.sendRedirect(redirectUrl);
+		}
+		
+		if (confirm != null) {
+			if(order.getItems().size() > 0 && Utils.isValidUser(user)) {
 				order.setCustomer(user);
 				order.setSubmitted(new Date());
 				order.setId(((Integer) request.getAttribute("totalAllOrders")));
@@ -79,21 +69,29 @@ public class Checkout extends HttpServlet {
 				try {
 					Orders orders = Orders.getInstance();
 					OrderDAO orderDao = new OrderDAO(new File(poPath));
-					sw = orders.createPO(poPath, 
-							orderDao.getOrderFileName(user.getUsername(), ((Integer) s.getAttribute("totalOrders")) + 1), 
+					
+					int orderNum = ((Integer) s.getAttribute("totalOrders")) + 1;
+					String orderLink = orderDao.getOrderFileName(user.getUsername(), orderNum);
+
+					orders.createPO(poPath, 
+							orderLink, 
 							"res/xml/PO.xsl", orderDao, order);
 					order.clearCart();
+
+					request.setAttribute("orderCreated", orderNum);
 				} catch (Exception e) {
-					sw.write("<error>" + e.getMessage() + "</error>\n");
+					request.setAttribute("error", e.getMessage());
 					System.out.println("ERROR: " + e.getMessage());
 				}
 			} else {
-				sw.write("<msg>" + "Empty Cart" + "</msg>\n");
+//				request.setAttribute("error", "Empty Cart!");
 				System.out.println("Empty Cart!");
 			}
 		}
 		
-		out.write(sw.toString());
+		request.setAttribute("order", s.getAttribute("order"));
+		
+		request.getRequestDispatcher("/WEB-INF/pages/Checkout.jspx").forward(request, response);
 	}
 
 	/**

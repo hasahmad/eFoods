@@ -97,15 +97,17 @@ public class CartApi extends HttpServlet {
 		try {
 			Item product = model.getFoodBy("num", addToCart);
 			if (products.size() > 0) {
-				for (Item p: products) {
-					if (!p.getNumber().equals(addToCart)) {	
-						product.setQuantity(1);
-						products.add(product);
-						json.addProperty("status", 1);
-						
-						json.addProperty("action", "ADD");
-						json.addProperty("actionReq", addToCart);
-					}
+				if (!products.contains(product)) {
+					product.setQuantity(1);
+					products.add(product);
+
+					json.addProperty("status", 1);
+					json.addProperty("action", "ADD");
+					json.addProperty("actionReq", addToCart);
+				} else {
+					int i = products.indexOf(product);
+					Item p = products.get(i);
+					p.increaseQty();
 				}
 			} else {
 				product.setQuantity(1);

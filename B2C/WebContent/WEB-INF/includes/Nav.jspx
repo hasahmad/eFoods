@@ -29,6 +29,9 @@
 					<div class="navbar-item">
 						<div class="buttons">
 							<a class="button is-primary" href="${param.rootURLPath}/Cart"> <strong>Cart</strong></a>
+							<c:if test="${!empty order.getItems()}">
+								<a class="button is-info" href="${param.rootURLPath}/Checkout"> <strong>Checkout</strong></a>
+							</c:if>
 							<c:choose>
 								<c:when test="${!empty AUTH.name}">
 									<a class="button is-link" href="${param.rootURLPath}/PurchaseOrders">Hello ${AUTH.name}</a>

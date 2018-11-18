@@ -8,7 +8,6 @@
 			</head>
 			<body>
 				<p><a href='Home'>Back to Shop</a></p>
-				<h1>Purchase Order Confirmation</h1>
 				<h3>Hello <xsl:value-of select="order/customer/name" /></h3>
 				<h4>Your order has been recieved.</h4>
 				<p><strong>Account: </strong><xsl:value-of select="order/customer/@account" /></p>
