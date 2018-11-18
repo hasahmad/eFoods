@@ -10,6 +10,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -77,7 +80,7 @@ public class CartApi extends HttpServlet {
 
 		if (!json.has("action")) {
 			json.addProperty("action", "GET");
-		}
+		}		
 
 		out.print(json.toString());
 	}

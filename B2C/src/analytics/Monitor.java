@@ -1,5 +1,6 @@
 package analytics;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +28,8 @@ import javax.servlet.http.HttpSessionListener;
 import model.Account;
 import model.Order;
 import model.catalog.Item;
+import model.dao.OrderDAO;
+import model.helpers.Utils;
 
 /**
  * Application Lifecycle Listener implementation class Monitor
@@ -49,7 +52,7 @@ public class Monitor implements ServletContextListener, ServletContextAttributeL
          // TODO Auto-generated method stub
     	List<Item> items = new ArrayList<Item>();
     	se.getSession().setAttribute("order", new Order(items));
-
+    	se.getSession().setAttribute("orders", new ArrayList<String>());
     	se.getSession().setAttribute("AUTH", new Account());
     }
 
@@ -72,6 +75,9 @@ public class Monitor implements ServletContextListener, ServletContextAttributeL
      */
     public void sessionIdChanged(HttpSessionEvent arg0, String arg1)  { 
          // TODO Auto-generated method stub
+    	if (arg0.getSession().getAttribute("orders") == null) {
+    		arg0.getSession().setAttribute("orders", new ArrayList<String>());
+    	}
     	
     	if (arg0.getSession().getAttribute("order") == null) {
     		List<Item> items = new ArrayList<Item>();
@@ -166,7 +172,11 @@ public class Monitor implements ServletContextListener, ServletContextAttributeL
     public void requestInitialized(ServletRequestEvent sre)  { 
     	HttpServletRequest req = (HttpServletRequest) sre.getServletRequest();
     	HttpSession currentSession = req.getSession();
-
+    	
+    	if (req.getAttribute("poDir") == null) {
+    		req.setAttribute("poDir", req.getServletContext().getRealPath("/POs"));
+    	}
+    	
     	if (currentSession.getAttribute("order") == null) {
     		List<Item> items = new ArrayList<Item>();
     		currentSession.setAttribute("order", new Order(items));
@@ -175,8 +185,13 @@ public class Monitor implements ServletContextListener, ServletContextAttributeL
     	if (currentSession.getAttribute("AUTH") == null) {
     		currentSession.setAttribute("AUTH", new Account());
     	}
+    	
+    	if (currentSession.getAttribute("orders") == null) {
+    		currentSession.setAttribute("orders", new ArrayList<String>());
+    	}
 
     	ComputeAnalytics.computeOrders(req);
+    	ComputeAnalytics.addUserOrders(req);
     }
 
 	/**

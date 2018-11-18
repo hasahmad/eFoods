@@ -1,7 +1,12 @@
 package model.catalog;
 
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 import model.helpers.Utils;
 
+@XmlRootElement(name="item")
 public class Item {
 	
 	private String name, number;
@@ -23,6 +28,7 @@ public class Item {
 		setCatID(catID);
 	}
 	
+	@XmlElement(name="name")
 	public String getName() {
 		return name;
 	}
@@ -31,6 +37,7 @@ public class Item {
 		this.name = name;
 	}
 	
+	@XmlElement(name="price")
 	public double getPrice() {
 		return Utils.round(price, 2);
 	}
@@ -42,6 +49,7 @@ public class Item {
 		this.price = Utils.round(price, 2);
 	}
 	
+	@XmlElement(name="quantity")
 	public int getQuantity() {
 		return quantity;
 	}
@@ -58,6 +66,7 @@ public class Item {
 		this.setQuantity(qty);
 	}
 	
+	@XmlAttribute(name="number")
 	public String getNumber() {
 		return number;
 	}
@@ -74,6 +83,7 @@ public class Item {
 		this.catID = catID;
 	}
 	
+	@XmlElement(name="extended")
 	public void setTotalPrice(double totalPrice) {
 		this.totalPrice = Utils.round(totalPrice, 2);
 	}

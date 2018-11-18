@@ -48,7 +48,7 @@
 							<th>Product Number</th>
 							<th>Product Name</th>
 							<th>Price</th>
-							<th>Total Price</th>
+							<th>Extended Price</th>
 							<th>Quantity</th>
 							<th>Actions</th>
 						</tr>

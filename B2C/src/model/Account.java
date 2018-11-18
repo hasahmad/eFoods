@@ -1,34 +1,24 @@
 package model;
 
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement(name="customer")
 public class Account {
-	private int id;
 	private String username;
 	private String name;
-	private String hash;
 	
 	public Account() {
 		
 	}
 
-	public Account(int id) {
-		this.setId(id);
-	}
-
-	public Account(int id, String name, String username, String hash) {
-		this.setId(id);
+	public Account(String name, String username) {
 		this.setName(name);
 		this.setUsername(username);
-		this.setHash(hash);
-	}
-
-	public int getId() {
-		return id;
 	}
 	
-	public void setId(int id) {
-		this.id = id;
-	}
-	
+	@XmlElement(name="name")
 	public String getName() {
 		return name;
 	}
@@ -37,6 +27,7 @@ public class Account {
 		this.name = name;
 	}
 	
+	@XmlAttribute(name="account")
 	public String getUsername() {
 		return username;
 	}
@@ -44,13 +35,4 @@ public class Account {
 	public void setUsername(String username) {
 		this.username = username;
 	}
-	
-	public String getHash() {
-		return hash;
-	}
-	
-	public void setHash(String hash) {
-		this.hash = hash;
-	}
-
 }

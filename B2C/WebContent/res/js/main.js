@@ -210,7 +210,7 @@ function deleteCartItemResult(request)
 }
 
 function doCheckout() {
-	
+	location.href = appRootPath + "Checkout";
 }
 
 function updatePage() {

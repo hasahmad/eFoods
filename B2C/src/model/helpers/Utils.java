@@ -33,6 +33,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
+import model.Account;
+
 public class Utils {
 	
 	public static String doHttpGET(Map<String, String> params, String Url, String contentType) throws Exception 
@@ -85,6 +87,15 @@ public class Utils {
 	    BigDecimal bd = new BigDecimal(value);
 	    bd = bd.setScale(places, RoundingMode.HALF_UP);
 	    return bd.doubleValue();
+	}
+	
+	public static Boolean isValidUser(Account user) {
+		boolean result = false;
+		if (user != null && user.getName() != null && !user.getName().isEmpty() 
+				&& user.getUsername() != null && !user.getUsername().isEmpty()) {
+			result = true;
+		}
+		return result;
 	}
 
 }
