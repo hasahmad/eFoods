@@ -221,6 +221,10 @@ function gotoHomePage() {
 	location.href = appRootPath;
 }
 
+function doLogin() {
+	location.href = appPath + "?doLogin=";
+}
+
 
 function doSimpleAjax(address, data, handler)
 {

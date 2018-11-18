@@ -30,15 +30,12 @@
 						<div class="buttons">
 							<a class="button is-primary" href="${param.rootURLPath}/Cart"> <strong>Cart</strong></a>
 							<c:choose>
-							<c:when test="${!empty AUTH}">
-								<a class="button is-link" href="${param.rootURLPath}/PurchaseOrders">Hello ${AUTH.name}</a>
-							</c:when>
-							<c:when test="${!empty session.AUTH}">
-								<a class="button is-link" href="${param.rootURLPath}/PurchaseOrders">Hello ${session.AUTH.name}</a>
-							</c:when>
-							<c:otherwise>
-								<a class="button is-light" href="${param.rootURLPath}/Login"></a>
-							</c:otherwise>
+								<c:when test="${!empty AUTH.name}">
+									<a class="button is-link" href="${param.rootURLPath}/PurchaseOrders">Hello ${AUTH.name}</a>
+								</c:when>
+								<c:otherwise>
+									<a class="button is-light" onclick="doLogin()">Login</a>
+								</c:otherwise>
 							</c:choose>
 						</div>
 					</div>
