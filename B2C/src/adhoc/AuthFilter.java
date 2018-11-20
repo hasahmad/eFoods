@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import model.Account;
+import model.Model;
+import model.catalog.Item;
 import model.helpers.Utils;
 
 /**
@@ -52,6 +54,7 @@ public class AuthFilter implements Filter {
 
  		String userName = request.getParameter("name");
 		String username = request.getParameter("user");
+		
 
 		if (userName != null && username != null) {
 			user.setName(userName);
@@ -70,6 +73,8 @@ public class AuthFilter implements Filter {
  			}
  		}
 
+ 		showAds(req);
+
 		chain.doFilter(request, response);
 	}
 
@@ -78,6 +83,27 @@ public class AuthFilter implements Filter {
 	 */
 	public void init(FilterConfig fConfig) throws ServletException {
 		// TODO Auto-generated method stub
+	}
+	
+	private static synchronized void showAds(HttpServletRequest req) {
+		String addToCart = req.getParameter("addToCart");
+		HttpSession s = req.getSession();
+
+		if (addToCart != null) {
+ 			String itemToSellAds = "2002H712";
+ 			String onItemShowAds = "1409S413";
+ 			if (addToCart.equals(onItemShowAds)) {
+ 				try {
+					Item adItem = Model.getInstance().getFood(itemToSellAds);
+					if (s.getAttribute("adItem") != null) {
+						s.setAttribute("adItem", adItem);
+					}
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+ 			}
+ 		}
 	}
 
 }

@@ -225,6 +225,15 @@ function doLogin() {
 	location.href = appPath + "?doLogin=";
 }
 
+function gotoSearchPg() {
+	let query = document.getElementById("sQuery");
+	let searchParams = "";
+	if (query.value != null && query.value != "") {
+		searchParams = "?query=" + query.value;
+	}
+	location.href = appRootPath + "Search" + searchParams;
+}
+
 
 function doSimpleAjax(address, data, handler)
 {

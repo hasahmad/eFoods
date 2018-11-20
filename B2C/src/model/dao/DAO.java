@@ -11,7 +11,7 @@ import java.util.Map;
 public abstract class DAO<T> {
 	protected String TABLE_NAME;
 	protected static Connection conn;
-
+	
 	public DAO() throws Exception {
 		this("");
 	}
@@ -97,6 +97,49 @@ public abstract class DAO<T> {
 		ConnectionFactory.closeConn(r, stmt, conn);
 		return result;
 	}
+	
+	public List<T> getAllByMultiple(String val, Boolean like, Integer limit) throws Exception {
+		Connection conn = ConnectionFactory.getConn();
+		List<T> result = new ArrayList<T>();
+		String limitQuery = "";
+//		String limitQuery = (limit != null && limit > 0) ? "limit " + limit : "";
+		String equal = like ? "like" : "=";
+
+		val = like ? "'%" + val + "%'" : val;
+		
+		String whereQuery = "";
+
+		int idx=0;
+		for (String[] str: getSearchColumns()) {
+			String or = "OR";
+			if (str[1] == "str") {
+				if (val.charAt(0) != '\'' && val.charAt(val.length()-1) != '\'') {
+					val = "'" + val + "'";
+				}
+			}
+
+			if (idx == getSearchColumns().size()-1) {
+				or = "";
+			}
+
+			whereQuery += String.format(" %s %s %s %s ", str[0], equal, val, or);
+			idx++;
+		}
+
+		String query = String.format("%s where %s %s", getAllQuery(), whereQuery, limitQuery);
+		PreparedStatement stmt = conn.prepareStatement(query);
+		ResultSet r = stmt.executeQuery();
+
+		while (r.next())
+		{
+			T i = createBean(r);
+			if (!result.contains(i)) {
+				result.add(i);
+			}
+		}
+		ConnectionFactory.closeConn(r, stmt, conn);
+		return result;
+	}
 
 	public T findOne(String val) throws Exception {
 		return this.findOneBy("id", val, false);
@@ -112,5 +155,6 @@ public abstract class DAO<T> {
 	
 	public abstract Map<String, String[]> getColumns();
 	public abstract String convertToColumnName(String by);
+	public abstract List<String[]> getSearchColumns();
 	public abstract T createBean(ResultSet r) throws Exception;
 }

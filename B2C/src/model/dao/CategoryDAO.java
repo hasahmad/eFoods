@@ -2,22 +2,29 @@ package model.dao;
 
 import java.sql.Blob;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import model.catalog.Category;
 
 public class CategoryDAO extends DAO<Category> {
 	private static Map<String, String[]> COLUMNS;
+	private static List<String[]> searchColumns;
 
 	public CategoryDAO() throws Exception {
 		super("CATEGORY");
 		COLUMNS = new HashMap<String, String[]>();
+		searchColumns = new ArrayList<String[]>();
 		
 		COLUMNS.put("name", new String[]{"NAME", "str"});
 		COLUMNS.put("desc", new String[]{"DESCRIPTION", "str"});
 		COLUMNS.put("pic", new String[]{"PICTURE", "str"});
 		COLUMNS.put("id", new String[]{"ID", "num"});
+		
+		searchColumns.add(COLUMNS.get("name"));
+		searchColumns.add(COLUMNS.get("desc"));
 	}
 
 	@Override
@@ -47,6 +54,11 @@ public class CategoryDAO extends DAO<Category> {
 		return result;
 	}
 	
+	@Override
+	public List<String[]> getSearchColumns() {
+		return searchColumns;	
+	}
+
 	@Override
 	public Map<String, String[]> getColumns() {
 		return COLUMNS;

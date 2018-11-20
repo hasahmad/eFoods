@@ -2,6 +2,7 @@ package analytics;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.AsyncEvent;
@@ -54,6 +55,7 @@ public class Monitor implements ServletContextListener, ServletContextAttributeL
     	se.getSession().setAttribute("order", new Order(items));
     	se.getSession().setAttribute("orders", new ArrayList<String>());
     	se.getSession().setAttribute("AUTH", new Account());
+    	se.getSession().setAttribute("startTime", new Date());
     }
 
 	/**
@@ -86,6 +88,10 @@ public class Monitor implements ServletContextListener, ServletContextAttributeL
     	
     	if (arg0.getSession().getAttribute("AUTH") == null) {
     		arg0.getSession().setAttribute("AUTH", new Account());
+    	}
+    	
+    	if (arg0.getSession().getAttribute("startTime") == null) {
+    		arg0.getSession().setAttribute("startTime", new Date());
     	}
     }
 
@@ -185,13 +191,14 @@ public class Monitor implements ServletContextListener, ServletContextAttributeL
     	if (currentSession.getAttribute("AUTH") == null) {
     		currentSession.setAttribute("AUTH", new Account());
     	}
-    	
+
     	if (currentSession.getAttribute("orders") == null) {
     		currentSession.setAttribute("orders", new ArrayList<String>());
     	}
 
     	ComputeAnalytics.computeOrders(req);
     	ComputeAnalytics.addUserOrders(req);
+    	ComputeAnalytics.computerAvgStartCheckoutTime(req);
     }
 
 	/**

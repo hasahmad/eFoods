@@ -1,17 +1,21 @@
 package model.dao;
 
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import model.catalog.Item;
 
 public class ItemDAO extends DAO<Item> {
 	private static Map<String, String[]> COLUMNS;
+	private static List<String[]> searchColumns;
 	
 	public ItemDAO() throws Exception {
 		super("ITEM");
 		COLUMNS = new HashMap<String, String[]>();
+		searchColumns = new ArrayList<String[]>();
 		
 		COLUMNS.put("qty", new String[]{"QTY", "num"});
 		COLUMNS.put("name", new String[]{"NAME", "str"});
@@ -19,6 +23,9 @@ public class ItemDAO extends DAO<Item> {
 		COLUMNS.put("id", new String[]{"NUMBER", "str"});
 		COLUMNS.put("num", new String[]{"NUMBER", "str"});
 		COLUMNS.put("cid", new String[]{"CATID", "num"});
+		
+		searchColumns.add(COLUMNS.get("name"));
+		searchColumns.add(COLUMNS.get("num"));
 	}
 
 	@Override
@@ -50,6 +57,11 @@ public class ItemDAO extends DAO<Item> {
 			result = COLUMNS.get("cid")[0];
 		} 
 		return result;
+	}
+	
+	@Override
+	public List<String[]> getSearchColumns() {
+		return searchColumns;	
 	}
 	
 	@Override

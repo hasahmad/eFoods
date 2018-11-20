@@ -52,6 +52,10 @@ public class Model {
 	public Item getFoodBy(String by, String val, Boolean like) throws Exception {
 		return itemDao.findOneBy(by, val, like);
 	}
+	
+	public List<Item> getFoodsByMultiple(String val) throws Exception {
+		return itemDao.getAllByMultiple(val, true, null);
+	}
 
 	public List<Item> getFoodsBy(String by, String val) throws Exception {
 		return itemDao.getAllBy(by, val, true);

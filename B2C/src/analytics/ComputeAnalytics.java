@@ -2,7 +2,9 @@ package analytics;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -42,6 +44,36 @@ public class ComputeAnalytics {
 				}
 			}
 		}
+	}
+	
+	public static synchronized void computerAvgStartCheckoutTime(HttpServletRequest req) {
+		HttpSession currentSession = req.getSession();
+		String url = req.getRequestURI();
+		String path = url.replaceAll("/eFoods/", "");
+
+		if (path.toLowerCase().contains("checkout") & req.getParameter("confirm") != null) {
+			if (currentSession.getAttribute("checkoutTime") == null) {
+				currentSession.setAttribute("checkoutTime", new Date());
+			}
+
+			Date startTime = (Date) currentSession.getAttribute("startTime");
+			Date checkoutTime = (Date) currentSession.getAttribute("checkoutTime");
+
+			long diff = checkoutTime.getTime() - startTime.getTime();
+			long seconds = TimeUnit.MILLISECONDS.toSeconds(diff);
+			long minutes = TimeUnit.MILLISECONDS.toMinutes(diff);
+			long checkoutAvgTime = seconds;
+			System.out.println("avg: "+ seconds);
+//			if (seconds > 60) {
+//				checkoutAvgTime = minutes;
+//			}
+			currentSession.setAttribute("checkoutAvgTime", checkoutAvgTime);
+		}
+	}
+	
+	public static synchronized void resetAttrsAfterCheckout(HttpServletRequest req) {
+		HttpSession currentSession = req.getSession();
+		currentSession.removeAttribute("checkoutTime");
 	}
 
 }

@@ -11,7 +11,6 @@
     <error-code>404</error-code>
     <location>/WEB-INF/pages/Error404.jspx</location>
   </error-page>
-  
   <filter>
     <filter-name>AuthFilter</filter-name>
     <filter-class>adhoc.AuthFilter</filter-class>

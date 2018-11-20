@@ -3,6 +3,23 @@
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt" version="2.0">
 	
+	
+	<!-- SHow Ads -->
+	<c:if test="${!empty adItem}">
+		<section class="container">
+			<c:set var="item" value="${adItem}" />
+			<jsp:include page="Item.jspx">
+				<jsp:include page="Item.jspx">
+					<jsp:param name="name" value="${item.name}" />
+					<jsp:param name="number" value="${item.number}" />
+					<jsp:param name="price" value="${item.price}" />
+					<jsp:param name="unit" value="${item.quantity}"/>
+					<jsp:param name="catId" value="${item.catID}"/>
+				</jsp:include>
+			</jsp:include>
+		</section>
+	</c:if>
+	
 	<!-- JS -->
 	<script type="text/javascript" src="${param.rootURLPath}/res/js/main.js"><!-- --></script>
 	

@@ -59,7 +59,7 @@ public class Checkout extends HttpServlet {
 			String redirectUrl = "Cart";
 			response.sendRedirect(redirectUrl);
 		}
-		
+
 		if (confirm != null) {
 			if(order.getItems().size() > 0 && Utils.isValidUser(user)) {
 				order.setCustomer(user);
@@ -77,7 +77,9 @@ public class Checkout extends HttpServlet {
 							orderLink, 
 							"res/xml/PO.xsl", orderDao, order);
 					order.clearCart();
-
+					
+					s.removeAttribute("checkoutTime");
+					
 					request.setAttribute("orderCreated", orderNum);
 				} catch (Exception e) {
 					request.setAttribute("error", e.getMessage());
