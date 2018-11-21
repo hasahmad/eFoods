@@ -55,10 +55,11 @@ public class AuthFilter implements Filter {
  		String userName = request.getParameter("name");
 		String username = request.getParameter("user");
 		
-
-		if (userName != null && username != null) {
-			user.setName(userName);
-			user.setUsername(username);
+		if (!Utils.isValidUser(user)) {
+			if (userName != null && username != null) {
+				user.setName(userName);
+				user.setUsername(username);
+			}
 		}
 
  		if (path.contains("Checkout") || path.contains("Login") || 
@@ -66,6 +67,11 @@ public class AuthFilter implements Filter {
  				req.getParameter("doLogin") != null) 
  		{
  			if (!Utils.isValidUser(user)) {
+ 				if (userName != null && username != null) {
+ 					user.setName(userName);
+ 					user.setUsername(username);
+ 				}
+
  				String redirectUrl = "https://www.eecs.yorku.ca/~roumani/servers/auth/oauth.cgi";
  				String params = "?back=" + req.getRequestURL();
  				resp.sendRedirect(redirectUrl + params);
