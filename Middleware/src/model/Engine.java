@@ -49,8 +49,9 @@ public class Engine {
 		products = new ArrayList<Product>();
 		processed = new ArrayList<String>();
 		report = new Report();
-		
-		if (!this.setPOsDir(POsDir)) {
+	
+		this.setPOsDir(POsDir);
+		if (!this.checkPOsDir(POsDir)) {
 			this.processedOrdersFileName = processedOrdersFileName;
 			this.getProcessedFromFile(processedOrdersFileName);
 
@@ -87,9 +88,14 @@ public class Engine {
 		return products;
 	}
 	
-	public boolean setPOsDir(String POsDir) {
-		if (POsDir != null && !POsDir.isEmpty()) {
+	public void setPOsDir(String POsDir) {
+		if (checkPOsDir(POsDir) ) {
 			posDir = POsDir;
+		}
+	}
+	
+	public boolean checkPOsDir(String POsDir) {
+		if (POsDir != null && !POsDir.isEmpty()) {
 			return true;
 		}
 		return false;
@@ -116,7 +122,7 @@ public class Engine {
 	public synchronized void processPO(File f, List<Product> products, List<String> processed) throws Exception {
 		if (getFileExtension(f).equals(".xml")) {
 			if (!processed.contains(f.getName())) {
-				
+
 				DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 				DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 				Document doc = dBuilder.parse(f);
