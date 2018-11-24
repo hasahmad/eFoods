@@ -37,9 +37,9 @@
 					<jsp:include page="../includes/Error.jspx" />
 				</section>
 				<section>
-					<form action="Search">
+					<form action="Search" style="margin-bottom: 15px;">
 						<div class="field has-addons">
-							<div class="control">
+							<div class="control" style="width: 100%;">
 								<input class="input" type="text" name="query" placeholder="Find an Item" value="${query}" />
 							</div>
 							<div class="control">
@@ -55,6 +55,7 @@
 						<jsp:include page="../includes/CatItemsCard.jspx">
 							<jsp:param name="catName" value="" />
 							<jsp:param name="catId" value="" />
+							<jsp:param name="search" value="1" />
 							<jsp:param name="items" value="${searchItems}" />
 						</jsp:include>
 						<br />

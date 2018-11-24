@@ -46,14 +46,24 @@ public class ComputeAnalytics {
 		}
 	}
 	
-	public static synchronized void computerAvgStartCheckoutTime(HttpServletRequest req) {
+	public static synchronized void computeAvgStartCheckoutTime(HttpServletRequest req) {
 		HttpSession currentSession = req.getSession();
 		String url = req.getRequestURI();
 		String path = url.replaceAll("/eFoods/", "");
+		
+		long checkoutAvgTime = 0;
+		int checkoutAvgCount = 0;
+		Order order = (Order) currentSession.getAttribute("order");
+		
+		if (path.toLowerCase().contains("checkout") && req.getParameter("confirm") != null && !order.getItems().isEmpty()) {
+			currentSession.setAttribute("checkoutTime", new Date());
 
-		if (path.toLowerCase().contains("checkout") & req.getParameter("confirm") != null) {
-			if (currentSession.getAttribute("checkoutTime") == null) {
-				currentSession.setAttribute("checkoutTime", new Date());
+			if (currentSession.getAttribute("checkoutAvgTime") != null) {
+				checkoutAvgTime = (long) currentSession.getAttribute("checkoutAvgTime");
+			}
+			
+			if (currentSession.getAttribute("checkoutAvgCount") != null) {
+				checkoutAvgCount = (int) currentSession.getAttribute("checkoutAvgCount");
 			}
 
 			Date startTime = (Date) currentSession.getAttribute("startTime");
@@ -61,13 +71,46 @@ public class ComputeAnalytics {
 
 			long diff = checkoutTime.getTime() - startTime.getTime();
 			long seconds = TimeUnit.MILLISECONDS.toSeconds(diff);
-			long minutes = TimeUnit.MILLISECONDS.toMinutes(diff);
-			long checkoutAvgTime = seconds;
-			System.out.println("avg: "+ seconds);
-//			if (seconds > 60) {
-//				checkoutAvgTime = minutes;
-//			}
+
+			checkoutAvgCount++;
+			checkoutAvgTime = (checkoutAvgTime + seconds) / checkoutAvgCount;
+
 			currentSession.setAttribute("checkoutAvgTime", checkoutAvgTime);
+			currentSession.setAttribute("checkoutAvgCount", checkoutAvgCount);
+		}
+	}
+	
+	public static synchronized void computeAvgAddToCartTime(HttpServletRequest req) {
+		HttpSession currentSession = req.getSession();
+		String url = req.getRequestURI();
+		String path = url.replaceAll("/eFoods/", "");
+
+		long addToCartAvgTime = 0;
+		int addToCartAvgCount = 0;
+		Order order = (Order) currentSession.getAttribute("order");
+		
+		if (path.toLowerCase().contains("addtocart") && order.getItems().isEmpty()) {
+			currentSession.setAttribute("addToCartTime", new Date());
+			
+			if (currentSession.getAttribute("addToCartAvgTime") != null) {
+				addToCartAvgTime = (long) currentSession.getAttribute("addToCartAvgTime");
+			}
+			
+			if (currentSession.getAttribute("addToCartAvgCount") != null) {
+				addToCartAvgCount = (int) currentSession.getAttribute("addToCartAvgCount");
+			}
+			
+			Date startTime = (Date) currentSession.getAttribute("startTime");
+			Date addToCartTime = (Date) currentSession.getAttribute("addToCartTime");
+			
+			long diff = addToCartTime.getTime() - startTime.getTime();
+			long seconds = TimeUnit.MILLISECONDS.toSeconds(diff);
+			
+			addToCartAvgCount++;
+			addToCartAvgTime = (addToCartAvgTime + seconds) / addToCartAvgCount;
+
+			currentSession.setAttribute("addToCartAvgTime", addToCartAvgTime);
+			currentSession.setAttribute("addToCartAvgCount", addToCartAvgCount);
 		}
 	}
 	

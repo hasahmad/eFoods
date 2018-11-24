@@ -2,7 +2,6 @@ var appURL = location.href;
 var appPath = location.pathname;
 var appRootPath = "/" + appPath.split("/")[1] + "/";
 
-
 /**
  * 
  * Bulma
@@ -154,15 +153,23 @@ function onClickViewCatItem() {
 function onClickAddToCartBtn(el) {
 	let productId = el.id.split("product-")[1];
 	let addToCartUrl = appRootPath + 'Api/Cart';
+	let qty = el.parentNode.parentNode.querySelector(".qtyInput input");
 
-	let qs = "addToCart=" + productId;
+	let qs = "addToCart=" + productId  + "&" + "qty=" + qty.value;
 	doSimpleAjax(addToCartUrl, qs, addToCartResult);
+	
 }
 
 function addToCartResult(request)
 {
 	// TODO: increase num on top cart btn
-	console.log('addeded to cart', request.responseText);
+	let resp = JSON.parse(JSON.stringify(request.responseText));
+	let checkoutLink = document.querySelectorAll("a[href$='Checkout']");
+
+	if (checkoutLink.length < 1) {
+		updatePage();
+	}
+	console.log(resp);
 }
 
 
@@ -183,6 +190,32 @@ function updateQtyResult(request)
 	// TODO: increase num on top cart btn
 	console.log('updated qty in cart', request.responseText);
 	updatePage();
+}
+
+
+function updateItemsQty(el) {
+	console.log("updating items qty");
+	let cartItemsTable = document.getElementById("cartItems");
+	let items = cartItemsTable.querySelector("tbody").getElementsByTagName("tr");
+	let cartUrl = appRootPath + 'Api/Cart';
+	
+	for(let i=0; i<items.length; i++) {
+		let item = items[i];
+		let productNum = item.id.split('p-')[1];
+		let productQty = document.getElementById("qty-" + productNum).value;
+
+		let qs = "updateQty=" + productNum + "&qty=" + productQty;
+		doSimpleAjax(cartUrl, qs, updateQtyItemsResult);
+	}
+
+	updatePage();
+}
+
+function updateQtyItemsResult(request)
+{
+	// TODO: increase num on top cart btn
+	console.log('updated qty in cart', request.responseText);
+//	updatePage();
 }
 
 

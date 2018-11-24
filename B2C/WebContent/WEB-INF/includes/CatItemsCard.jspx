@@ -7,10 +7,17 @@
 
 	<div class="card">
 		<header class="card-header">
-			<p class="card-header-title">${param.catName}</p>
-			<a class="card-header-icon secondary" style="border-style: solid; border-width: 1px;" aria-label="more options" id="view-cat-item-${param.catId}">
-				<strong>View All</strong>
-			</a>
+			<c:choose>
+				<c:when test="${param.search == 1}">
+					<p class="card-header-title">Search Results</p>
+				</c:when>
+				<c:otherwise>
+					<p class="card-header-title">${param.catName}</p>
+					<a class="card-header-icon secondary" style="border-style: solid; border-width: 1px;" aria-label="more options" id="view-cat-item-${param.catId}">
+						<strong>View All</strong>
+					</a>
+				</c:otherwise>
+			</c:choose>
 		</header>
 		
 		<div class="card-content">
@@ -27,6 +34,8 @@
 											<jsp:param name="price" value="${item.price}" />
 											<jsp:param name="unit" value="${item.quantity}"/>
 											<jsp:param name="catId" value="${item.catID}"/>
+											<jsp:param name="unit" value="${item.unit}"/>
+											<jsp:param name="qty" value="${item.quantity}"/>
 										</jsp:include>
 									</div>
 								</c:if>
@@ -39,6 +48,8 @@
 											<jsp:param name="price" value="${item.price}" />
 											<jsp:param name="unit" value="${item.quantity}"/>
 											<jsp:param name="catId" value="${item.catID}"/>
+											<jsp:param name="unit" value="${item.unit}"/>
+											<jsp:param name="qty" value="${item.quantity}"/>
 									</jsp:include>
 								</div>
 							</c:otherwise>

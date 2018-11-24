@@ -9,23 +9,25 @@ import model.helpers.Utils;
 @XmlRootElement(name="item")
 public class Item {
 	
-	private String name, number;
+	private String name, number, unit;
+
 	private double price, totalPrice;
 	private int quantity, catID;
 	
 	public Item() {
 	}
 	
-	public Item(String name, double price, int quantity, String number) throws Exception {
-		this(name, price, quantity, number, 0);
+	public Item(String name, double price, int quantity, String number, String unit) throws Exception {
+		this(name, price, quantity, number, 0, unit);
 	}
 
-	public Item(String name, double price, int quantity, String number, int catId) throws Exception {
+	public Item(String name, double price, int quantity, String number, int catId, String unit) throws Exception {
 		setName(name);
 		setPrice(price);
 		setQuantity(quantity);
 		setNumber(number);
 		setCatID(catID);
+		setUnit(unit);
 	}
 	
 	@XmlElement(name="name")
@@ -83,11 +85,19 @@ public class Item {
 		this.catID = catID;
 	}
 	
-	@XmlElement(name="extended")
+	public String getUnit() {
+		return unit;
+	}
+
+	public void setUnit(String unit) {
+		this.unit = unit;
+	}
+	
 	public void setTotalPrice(double totalPrice) {
 		this.totalPrice = Utils.round(totalPrice, 2);
 	}
-
+	
+	@XmlElement(name="extended")
 	public double getTotalPrice() {
 		return Utils.round(totalPrice, 2);
 	}
@@ -96,13 +106,22 @@ public class Item {
 		this.quantity++;
 	}
 	
+	public void increaseQty(int qty) {
+		this.quantity += qty;
+	}
+	
+	public void increaseQty(String qtyStr) throws Exception {
+		int qty = Integer.parseInt(qtyStr);
+		this.setQuantity(qty);
+	}
+	
 	public double computeTotalPrice() {
 		this.setTotalPrice(this.price * this.quantity);
 		return Utils.round(this.totalPrice, 2);
 	}
 	
 	public String toString() {
-		return String.format("Name: %s | Price: %s | Quantity: %s | Number: %s | CatId: %s \n", name, price, quantity, number, catID);
+		return String.format("Name: %s | Price: %s | Quantity: %s | Number: %s | CatId: %s | Unit: %s \n", name, price, quantity, number, catID, unit);
 	}
 
 	@Override

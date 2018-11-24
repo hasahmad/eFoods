@@ -41,7 +41,7 @@
 		<section id="userPOsLinks">
 			<c:if test="${!empty ordersLinks}">
 				<c:forEach items="${ordersLinks}" var="order" varStatus="loop">
-					<p class="is-4 is-link"><a target="_blank" href="${order.value}">Order ${order.key}</a></p>
+					<p class="is-4 is-link is-size-4"><a target="_blank" href="${order.value}">Order ${order.key}</a></p>
 				</c:forEach>
 			</c:if>
 		</section>

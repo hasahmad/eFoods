@@ -5,25 +5,65 @@
 	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
 	version="2.0">
 
-	<div class="card">
+	<div class="card" id="item-${param.number}">
 		<div class="card-content">
-			<div class="">
+			<div class="image">
 				<div class="media-left">
-					<!-- <figure class="image is-48x48">
-						<img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image" />
-					</figure> -->
+					<figure class="image is-48x48">
+						<c:choose>
+							<c:when test="${param.catId == 3}">
+								<img src="res/img/meat.png" alt="" />
+							</c:when>
+							<c:when test="${param.catId == 4}">
+								<img src="res/img/cheese.png" alt="" />
+							</c:when>
+							<c:when test="${param.catId == 5}">
+								<img src="res/img/ice-cream.png" alt="" />
+							</c:when>
+							<c:when test="${param.catId == 6}">
+								<img src="res/img/cereal.png" alt="" />
+							</c:when>
+							<c:otherwise>
+								<img src="res/img/cutlery.png" alt="" />
+							</c:otherwise>
+						</c:choose>
+					</figure>
 				</div>
 				<br />
 				<div class="media-content">
 					<p class="title is-6">${param.name}</p>
-					<p class="subtitle is-6">${param.number}</p>
+					<p class="subtitle is-6" style="margin-top: -1rem;">${param.number} <br /> ${param.unit}</p>
 				</div>
 			</div>
 			<div class="content">
 				<fmt:setLocale value = "en_US"/>
 				<fmt:formatNumber type="currency" value="${param.price}"></fmt:formatNumber>
 				<br />
-				<button id="product-${param.number}" class="button button-info has-text-centered add-to-cart" onclick="onClickAddToCartBtn(this)">Add to cart</button>
+				<div class="field has-addons">
+					<div class="control qtyInput">
+						<input type="text" class="input" id="qty" placeholder="Qty" />
+					</div>
+					<div class="control">
+						<c:choose>
+							<c:when test="${param.catId == 3}">
+								<button id="product-${param.number}" class="button button-info has-text-centered add-to-cart is-info" onclick="onClickAddToCartBtn(this)">Add to cart</button>
+							</c:when>
+							<c:when test="${param.catId == 4}">
+								<button id="product-${param.number}" class="button button-info has-text-centered add-to-cart is-link" onclick="onClickAddToCartBtn(this)">Add to cart</button>
+							</c:when>
+							<c:when test="${param.catId == 5}">
+								<button id="product-${param.number}" class="button button-info has-text-centered add-to-cart is-success" onclick="onClickAddToCartBtn(this)">Add to cart</button>
+							</c:when>
+							<c:when test="${param.catId == 6}">
+								<button id="product-${param.number}" class="button button-info has-text-centered add-to-cart is-primary" onclick="onClickAddToCartBtn(this)">Add to cart</button>
+							</c:when>
+							<c:otherwise>
+								<button id="product-${param.number}" class="button button-info has-text-centered add-to-cart" onclick="onClickAddToCartBtn(this)">Add to cart</button>
+							</c:otherwise>
+						</c:choose>
+					</div>
+				</div>
+				
 			</div>
 		</div>
 		

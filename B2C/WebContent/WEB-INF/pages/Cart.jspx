@@ -95,7 +95,7 @@
 
 				<div class="field is-grouped" style="justify-content: flex-end; margin-bottom: 10px;">
 					<div class="control">
-						<button class="button is-primary" onclick="updatePage()">Update</button>
+						<button class="button is-primary" onclick="updateItemsQty()">Update</button>
 					</div>
 					<div class="control">
 						<button class="button is-link" onclick="gotoHomePage()">Continue Shopping</button>

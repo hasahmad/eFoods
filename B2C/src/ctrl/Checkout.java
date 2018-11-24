@@ -54,11 +54,11 @@ public class Checkout extends HttpServlet {
 
 		ServletContext context = getServletContext();
 		String poPath = context.getRealPath("/POs");
-		
-		if (cancel != null) {
-			String redirectUrl = "Cart";
-			response.sendRedirect(redirectUrl);
-		}
+
+//		if (cancel != null) {
+//			String redirectUrl = "Cart";
+//			response.sendRedirect(redirectUrl);
+//		}
 
 		if (confirm != null) {
 			if(order.getItems().size() > 0 && Utils.isValidUser(user)) {
@@ -78,7 +78,7 @@ public class Checkout extends HttpServlet {
 							"res/xml/PO.xsl", orderDao, order);
 					order.clearCart();
 					
-					s.removeAttribute("checkoutTime");
+//					s.removeAttribute("checkoutTime");
 					
 					request.setAttribute("orderCreated", orderNum);
 				} catch (Exception e) {

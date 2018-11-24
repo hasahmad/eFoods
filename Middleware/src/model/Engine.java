@@ -31,6 +31,8 @@ public class Engine {
 
 	private static String posDir = System.getProperty("user.home") + "/ws_4413/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/eFoods/POs/";
 	private String processedOrdersFileName;
+	private String reportsDir;
+	private String outTo;
 	private List<Product> products;
 	private List<String> processed;
 	private Report report;
@@ -43,7 +45,7 @@ public class Engine {
 
 	private Engine(String POsDir) throws Exception {
 		this(POsDir, null);
-	}
+	};
 
 	private Engine(String POsDir, String processedOrdersFileName) throws Exception {
 		products = new ArrayList<Product>();
@@ -51,7 +53,7 @@ public class Engine {
 		report = new Report();
 	
 		this.setPOsDir(POsDir);
-		if (!this.checkPOsDir(POsDir)) {
+		if (this.checkPOsDir(POsDir)) {
 			this.processedOrdersFileName = processedOrdersFileName;
 			this.getProcessedFromFile(processedOrdersFileName);
 
@@ -60,9 +62,36 @@ public class Engine {
 			this.saveProcessedToFile();
 		}
 	}
+	
+	private Engine(String POsDir, String processedOrdersFileName, String reportsDir, String outTo) throws Exception {
+		products = new ArrayList<Product>();
+		processed = new ArrayList<String>();
+		report = new Report();
+	
+		this.setPOsDir(POsDir);
+		this.reportsDir = reportsDir;
+		this.outTo = outTo;
+
+		if (this.checkPOsDir(POsDir)) {
+			this.processedOrdersFileName = processedOrdersFileName;
+			this.getProcessedFromFile(processedOrdersFileName);
+
+			processPOs(posDir);
+			report.setProducts(products);
+			this.saveProcessedToFile();
+			this.saveReportToFile(outTo);
+		}
+	}
 
 
 	// ---------------------------------------------------
+	public static Engine getInstance(String POsDir, String processedOrdersFileName, String reportsDir, String outTo) throws Exception {
+		if (instance == null) {
+			instance = new Engine(POsDir, processedOrdersFileName, reportsDir, outTo);
+		}
+		return instance;
+	}
+
 	public static Engine getInstance(String POsDir, String processedOrdersFileName) throws Exception {
 		if (instance == null) {
 			instance = new Engine(POsDir, processedOrdersFileName);
@@ -89,13 +118,17 @@ public class Engine {
 	}
 	
 	public void setPOsDir(String POsDir) {
-		if (checkPOsDir(POsDir) ) {
+		if (POsDir.equals("null") || POsDir.equals("none")) {
+			posDir = posDir;
+		} else if (checkPOsDir(POsDir) ) {
 			posDir = POsDir;
 		}
 	}
-	
+
 	public boolean checkPOsDir(String POsDir) {
 		if (POsDir != null && !POsDir.isEmpty()) {
+			return true;
+		} else if (POsDir.equals("null") || POsDir.equals("none")) {
 			return true;
 		}
 		return false;
@@ -155,7 +188,6 @@ public class Engine {
 				}
 
 				processed.add(f.getName());
-				System.out.println("hahahha");
 			}
 		}
 	}
@@ -180,9 +212,6 @@ public class Engine {
 
 	// ---------------------------------------------------
 	public synchronized String createXmlReport(List<Product> products) throws Exception {
-		report.setProducts(products);
-		this.saveProcessedToFile();
-
 		JAXBContext jc = JAXBContext.newInstance(Report.class);
 		Marshaller m = jc.createMarshaller();
 		StringWriter sw = new StringWriter();
@@ -192,6 +221,25 @@ public class Engine {
 
 	public synchronized String createXmlReport() throws Exception {
 		return createXmlReport(this.products);
+	}
+	
+	public synchronized void saveReportToFile(String outTo) throws Exception {
+		this.checkDir(this.reportsDir);
+		String reportFile = (this.reportsDir.charAt(this.reportsDir.length()-1) == '/') ? this.reportsDir : this.reportsDir + "/";
+		reportFile = reportFile + report.getGeneratedOn();
+
+		String reportCreated = "";
+		
+		if (outTo.toLowerCase().equals("xml")) {
+			reportFile = reportFile + ".xml";
+			reportCreated = this.createXmlReport();
+		} else if (outTo.toLowerCase().equals("json")) {
+			reportFile = reportFile + ".json";
+			reportCreated = this.createJsonReport().toString();
+		}
+		FileWriter fw = new FileWriter(reportFile);
+		fw.write(reportCreated);
+		fw.close();
 	}
 
 
@@ -233,10 +281,17 @@ public class Engine {
 
 	// ---------------------------------------------------
 	public synchronized File checkProcessedOrdersFile(String filename) throws Exception {
-		System.out.println(filename);
 		File f = new File(filename);
 		if (!f.exists()) {
 			f.createNewFile();
+		}
+		return f;
+	}
+	
+	public synchronized File checkDir(String dirName) throws Exception {
+		File f = new File(dirName);
+		if (!f.exists()) {
+			f.mkdir();
 		}
 		return f;
 	}

@@ -41,7 +41,7 @@
 		<c:if test="${!empty orderCreated}">
 			<p class="is-size-1">The Purchase Order has been completed!</p>
 			<p class="is-size-2">Thank you!</p>
-			<p>Here is the <a href="${rootURLPath}/PurchaseOrders?orderNum=${orderCreated}">link</a> to view this purchase order.</p>
+			<p class="is-size-4">Here is the <a class="is-link" href="${rootURLPath}/PurchaseOrders?orderNum=${orderCreated}">link</a> to view this purchase order.</p>
 		</c:if>
 		<c:if test="${empty orderCreated}">		
 			<section id="cart-products">

@@ -24,11 +24,15 @@
 			<jsp:param name="rootURLPath" value="${rootURLPath}" />
 		</jsp:include>
 		<main class="bd-main">
-			<section class="hero is-medium is-primary is-bold">
+			<section class="hero is-medium is-primary is-bold" 
+				style="background-image: url(res/img/stand.png); 
+						background-position: center;
+    					background-size: contain;
+    					background-repeat: no-repeat;">
 				<div class="hero-body">
 			  		<div class="container">
-			    		<h1 class="title">Food R Us!</h1>
-			      		<h2 class="subtitle">An eCommerce Site</h2>
+			    		<h1 class="title has-text-light">Food R Us!</h1>
+			      		<h2 class="subtitle has-text-light">An eCommerce Site</h2>
 			    	</div>
 			  </div>
 			</section>
@@ -62,6 +66,7 @@
 										<jsp:param name="catName" value="${cat.key.name}" />
 										<jsp:param name="catId" value="${cat.key.id}" />
 										<jsp:param name="items" value="${cat.value}" />
+										<jsp:param name="search" value="0" />
 									</jsp:include>
 								</div>
 							</c:forEach>
@@ -77,6 +82,7 @@
 								<jsp:param name="catName" value="${cat.key.name}" />
 								<jsp:param name="catId" value="${cat.key.id}" />
 								<jsp:param name="limit" value="3" />
+								<jsp:param name="search" value="0" />
 								<jsp:param name="items" value="${cat.value}" />
 							</jsp:include>
 							<br />

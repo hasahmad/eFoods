@@ -80,16 +80,16 @@ public class Monitor implements ServletContextListener, ServletContextAttributeL
     	if (arg0.getSession().getAttribute("orders") == null) {
     		arg0.getSession().setAttribute("orders", new ArrayList<String>());
     	}
-    	
+
     	if (arg0.getSession().getAttribute("order") == null) {
     		List<Item> items = new ArrayList<Item>();
     		arg0.getSession().setAttribute("order", new Order(items));
     	}
-    	
+
     	if (arg0.getSession().getAttribute("AUTH") == null) {
     		arg0.getSession().setAttribute("AUTH", new Account());
     	}
-    	
+
     	if (arg0.getSession().getAttribute("startTime") == null) {
     		arg0.getSession().setAttribute("startTime", new Date());
     	}
@@ -198,7 +198,8 @@ public class Monitor implements ServletContextListener, ServletContextAttributeL
 
     	ComputeAnalytics.computeOrders(req);
     	ComputeAnalytics.addUserOrders(req);
-    	ComputeAnalytics.computerAvgStartCheckoutTime(req);
+    	ComputeAnalytics.computeAvgStartCheckoutTime(req);
+    	ComputeAnalytics.computeAvgAddToCartTime(req);
     }
 
 	/**

@@ -23,6 +23,7 @@ public class ItemDAO extends DAO<Item> {
 		COLUMNS.put("id", new String[]{"NUMBER", "str"});
 		COLUMNS.put("num", new String[]{"NUMBER", "str"});
 		COLUMNS.put("cid", new String[]{"CATID", "num"});
+		COLUMNS.put("unit", new String[]{"UNIT", "str"});
 		
 		searchColumns.add(COLUMNS.get("name"));
 		searchColumns.add(COLUMNS.get("num"));
@@ -56,9 +57,13 @@ public class ItemDAO extends DAO<Item> {
 		{
 			result = COLUMNS.get("cid")[0];
 		} 
+		else if (by.toLowerCase().equals(COLUMNS.get("unit")[0])) 
+		{
+			result = COLUMNS.get("unit")[0];
+		}
 		return result;
 	}
-	
+
 	@Override
 	public List<String[]> getSearchColumns() {
 		return searchColumns;	
@@ -72,16 +77,17 @@ public class ItemDAO extends DAO<Item> {
 		item.setPrice(getPrice(r));
 		item.setNumber(getNumber(r));
 		item.setCatID(getCatID(r));
+		item.setUnit(getUnit(r));
 		return item;
 	}
-	
+
 	@Override
 	public Map<String, String[]> getColumns() {
 		return COLUMNS;
 	}
 	
 	public String getId(ResultSet r) throws Exception {
-		return r.getString(COLUMNS.get("cid")[0]);
+		return r.getString(COLUMNS.get("id")[0]);
 	}
 	
 	public String getName(ResultSet r) throws Exception {
@@ -97,11 +103,15 @@ public class ItemDAO extends DAO<Item> {
 	}
 
 	public String getNumber(ResultSet r) throws Exception {
-		return r.getString(COLUMNS.get("id")[0]);
+		return r.getString(COLUMNS.get("num")[0]);
 	}
 
 	public int getCatID(ResultSet r) throws Exception {
 		return r.getInt(COLUMNS.get("cid")[0]);
+	}
+	
+	public String getUnit(ResultSet r) throws Exception {
+		return r.getString(COLUMNS.get("unit")[0]);
 	}
 
 	public static void main(String[] args) throws Exception {

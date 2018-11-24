@@ -62,7 +62,7 @@ public class CartApi extends HttpServlet {
 		json.addProperty("status", 1);
 
 		if (addToCart != null) {
-			addItemToCart(model, products, json, addToCart);
+			addItemToCart(model, products, json, addToCart, productQty);
 		}
 
 		if (updateQty != null) {
@@ -93,24 +93,32 @@ public class CartApi extends HttpServlet {
 		doGet(request, response);
 	}
 
-	private void addItemToCart(Model model, List<Item> products, JsonObject json, String addToCart) {
+	private void addItemToCart(Model model, List<Item> products, JsonObject json, String addToCart, String productQty) {
 		try {
 			Item product = model.getFoodBy("num", addToCart);
 			if (products.size() > 0) {
 				if (!products.contains(product)) {
-					product.setQuantity(1);
+					if (productQty != null && !productQty.isEmpty()) {
+						product.setQuantity(productQty);
+					}
+
 					products.add(product);
 
 					json.addProperty("status", 1);
 					json.addProperty("action", "ADD");
 					json.addProperty("actionReq", addToCart);
 				} else {
-					int i = products.indexOf(product);
-					Item p = products.get(i);
-					p.increaseQty();
+//					int i = products.indexOf(product);
+//					Item p = products.get(i);
+//					if (productQty != null && !productQty.isEmpty()) {
+//						p.increaseQty(productQty);
+//					}
 				}
 			} else {
-				product.setQuantity(1);
+				if (productQty != null && !productQty.isEmpty()) {
+					product.setQuantity(productQty);
+				}
+
 				products.add(product);
 				json.addProperty("status", 1);
 
