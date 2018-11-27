@@ -46,16 +46,16 @@
 					<div class="control">
 						<c:choose>
 							<c:when test="${param.catId == 3}">
-								<button id="product-${param.number}" class="button button-info has-text-centered add-to-cart is-info" onclick="onClickAddToCartBtn(this)">Add to cart</button>
+								<button id="product-${param.number}" class="button button-info has-text-centered add-to-cart is-danger" onclick="onClickAddToCartBtn(this)">Add to cart</button>
 							</c:when>
 							<c:when test="${param.catId == 4}">
-								<button id="product-${param.number}" class="button button-info has-text-centered add-to-cart is-link" onclick="onClickAddToCartBtn(this)">Add to cart</button>
+								<button id="product-${param.number}" class="button button-info has-text-centered add-to-cart is-warning" onclick="onClickAddToCartBtn(this)">Add to cart</button>
 							</c:when>
 							<c:when test="${param.catId == 5}">
-								<button id="product-${param.number}" class="button button-info has-text-centered add-to-cart is-success" onclick="onClickAddToCartBtn(this)">Add to cart</button>
+								<button id="product-${param.number}" class="button button-info has-text-centered add-to-cart is-warning" onclick="onClickAddToCartBtn(this)">Add to cart</button>
 							</c:when>
 							<c:when test="${param.catId == 6}">
-								<button id="product-${param.number}" class="button button-info has-text-centered add-to-cart is-primary" onclick="onClickAddToCartBtn(this)">Add to cart</button>
+								<button id="product-${param.number}" class="button button-info has-text-centered add-to-cart is-danger" onclick="onClickAddToCartBtn(this)">Add to cart</button>
 							</c:when>
 							<c:otherwise>
 								<button id="product-${param.number}" class="button button-info has-text-centered add-to-cart" onclick="onClickAddToCartBtn(this)">Add to cart</button>

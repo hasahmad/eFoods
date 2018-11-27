@@ -53,7 +53,7 @@ public class Product extends HttpServlet {
 		String cid = request.getParameter("cid");
 		String limit = request.getParameter("limit");
 		String byCat = request.getParameter("byCat");
-		
+
 		try {			
 			if (byCat != null) {
 				if (byCat.toLowerCase().equals("name")) {

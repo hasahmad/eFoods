@@ -38,7 +38,7 @@
 							</c:if>
 							<c:choose>
 								<c:when test="${!empty AUTH.name}">
-									<a class="button is-link" href="${param.rootURLPath}/PurchaseOrders">Hello ${AUTH.name}</a>
+									<a class="button is-link" href="${param.rootURLPath}/Admin">Hello ${AUTH.name}</a>
 								</c:when>
 								<c:otherwise>
 									<a class="button is-light" onclick="doLogin()">Login</a>

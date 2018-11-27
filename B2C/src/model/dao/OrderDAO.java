@@ -7,19 +7,18 @@ import java.io.IOException;
 
 public class OrderDAO {
 	
-	private File orderData;
+	private File ordersDir;
 	
-	public OrderDAO(File orderData) {
-		this.orderData = orderData;
+	public OrderDAO() {
 	}
-	
-	/**
-	 * Check if directory exists, else create a new one
-	 */
-	public synchronized void checkDir() {
-		if (!orderData.exists()) {
-			orderData.mkdir();
-		}
+
+	public OrderDAO(String ordersDir) {
+		this(new File(ordersDir));
+	}
+
+	public OrderDAO(File ordersDir) {
+		this.setOrdersDir(ordersDir);
+		checkDir();
 	}
 	
 	public synchronized String getOrderFileName(String accountNum, int id) {
@@ -35,11 +34,11 @@ public class OrderDAO {
 	}
 	
 	public synchronized File[] getPOs() {
-		return orderData.listFiles();
+		return ordersDir.listFiles();
 	}
 	
 	public synchronized File[] getPOs(String accountNum) {
-		return orderData.listFiles(new FilenameFilter() {
+		return ordersDir.listFiles(new FilenameFilter() {
 			@Override public boolean accept(File dir, String name) {
 				return name.startsWith(getOrderFileNameFirstPart(accountNum));
 			}
@@ -47,7 +46,7 @@ public class OrderDAO {
 	}
 	
 	public synchronized File getPO(String fileName) {
-		return new File(orderData, fileName);
+		return new File(ordersDir, fileName);
 	}
 	
 	public synchronized FileWriter getFileWriter(String fileName) throws IOException {
@@ -57,6 +56,23 @@ public class OrderDAO {
 		}
 		poFile.createNewFile();
 		return new FileWriter(poFile);
+	}
+
+	/**
+	 * Check if directory exists, else create a new one
+	 */
+	public synchronized void checkDir() {
+		if (!ordersDir.exists()) {
+			ordersDir.mkdir();
+		}
+	}
+	
+	public File getOrdersDir() {
+		return this.ordersDir;
+	}
+	
+	public void setOrdersDir(File dir) {
+		this.ordersDir = dir;
 	}
 
 }

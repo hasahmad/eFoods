@@ -1,9 +1,10 @@
 package analytics;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.AsyncEvent;
 import javax.servlet.AsyncListener;
@@ -27,10 +28,8 @@ import javax.servlet.http.HttpSessionIdListener;
 import javax.servlet.http.HttpSessionListener;
 
 import model.Account;
-import model.Order;
 import model.catalog.Item;
-import model.dao.OrderDAO;
-import model.helpers.Utils;
+import model.catalog.Order;
 
 /**
  * Application Lifecycle Listener implementation class Monitor
@@ -92,7 +91,7 @@ public class Monitor implements ServletContextListener, ServletContextAttributeL
 
     	if (arg0.getSession().getAttribute("startTime") == null) {
     		arg0.getSession().setAttribute("startTime", new Date());
-    	}
+    	}    	
     }
 
 	/**
@@ -179,6 +178,10 @@ public class Monitor implements ServletContextListener, ServletContextAttributeL
     	HttpServletRequest req = (HttpServletRequest) sre.getServletRequest();
     	HttpSession currentSession = req.getSession();
     	
+    	if (req.getAttribute("users") == null) {
+    		req.setAttribute("users", new HashMap<String, long[]>());
+    	}
+    	
     	if (req.getAttribute("poDir") == null) {
     		req.setAttribute("poDir", req.getServletContext().getRealPath("/POs"));
     	}
@@ -196,6 +199,7 @@ public class Monitor implements ServletContextListener, ServletContextAttributeL
     		currentSession.setAttribute("orders", new ArrayList<String>());
     	}
 
+    	ComputeAnalytics.computeUsersAnalytics(req);
     	ComputeAnalytics.computeOrders(req);
     	ComputeAnalytics.addUserOrders(req);
     	ComputeAnalytics.computeAvgStartCheckoutTime(req);

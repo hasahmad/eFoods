@@ -41,7 +41,7 @@ import model.Account;
 public class Utils {
 	
 	public static final String AUTH_URL = "https://www.eecs.yorku.ca/~roumani/servers/auth/oauth.cgi";
-	
+
 	public static String doHttpGET(Map<String, String> params, String Url, String contentType) throws Exception 
 	{
 		StringBuilder result = new StringBuilder();

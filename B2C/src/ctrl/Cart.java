@@ -11,8 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import model.Model;
-import model.Order;
 import model.catalog.Item;
+import model.catalog.Order;
 
 /**
  * Servlet implementation class Cart
@@ -45,5 +45,4 @@ public class Cart extends HttpServlet {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
-
 }

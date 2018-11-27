@@ -19,8 +19,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import model.Model;
-import model.Order;
 import model.catalog.Item;
+import model.catalog.Order;
 
 /**
  * Servlet implementation class CartApi

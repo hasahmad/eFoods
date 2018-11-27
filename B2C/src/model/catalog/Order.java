@@ -1,4 +1,4 @@
-package model;
+package model.catalog;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import model.catalog.Item;
+import model.Account;
 import model.helpers.Utils;
 
 @XmlRootElement(name="order")

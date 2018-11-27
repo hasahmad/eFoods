@@ -7,6 +7,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import model.Account;
+import model.Model;
+import model.helpers.Utils;
+
 /**
  * Servlet implementation class Admin
  */
@@ -27,7 +31,19 @@ public class Admin extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		Account user = (Account) request.getSession().getAttribute("AUTH");
+
+		if (Utils.isValidUser(user)) {
+			request.setAttribute("addToCartAvgCount", request.getSession().getAttribute("addToCartAvgCount"));
+			request.setAttribute("addToCartAvgTime", request.getSession().getAttribute("addToCartAvgTime"));
+			
+			request.setAttribute("checkoutAvgTime", request.getSession().getAttribute("checkoutAvgTime"));
+			request.setAttribute("checkoutAvgCount", request.getSession().getAttribute("checkoutAvgCount"));
+		} else {
+			request.setAttribute("error", "Invalid User!");
+		}
+
+		request.getRequestDispatcher("/WEB-INF/pages/Admin.jspx").forward(request, response);
 	}
 
 	/**

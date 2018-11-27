@@ -1,14 +1,22 @@
 package model;
 
+import java.io.FileWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
+import javax.xml.transform.stream.StreamResult;
+
 import model.catalog.Category;
 import model.catalog.Item;
+import model.catalog.Order;
 import model.dao.CategoryDAO;
 import model.dao.ItemDAO;
+import model.dao.OrderDAO;
 
 public class Model {
 	private static Model instance = null;
@@ -49,7 +57,8 @@ public class Model {
 		return this.getFoodBy(by, val, false);
 	}
 	
-	public Item getFoodBy(String by, String val, Boolean like) throws Exception {
+	public Item getFoodBy(String by, String val, 
+			Boolean like) throws Exception {
 		return itemDao.findOneBy(by, val, like);
 	}
 	
@@ -57,15 +66,18 @@ public class Model {
 		return itemDao.getAllByMultiple(val, true, null);
 	}
 
-	public List<Item> getFoodsBy(String by, String val) throws Exception {
+	public List<Item> getFoodsBy(String by, 
+			String val) throws Exception {
 		return itemDao.getAllBy(by, val, true);
 	}
 	
-	public List<Item> getFoodsBy(String by, String val, Boolean like) throws Exception {
+	public List<Item> getFoodsBy(String by, 
+			String val, Boolean like) throws Exception {
 		return getFoodsBy(by, val, like, "0");
 	}
 	
-	public List<Item> getFoodsBy(String by, String val, Boolean like, String limit) throws Exception {
+	public List<Item> getFoodsBy(String by, String val, 
+			Boolean like, String limit) throws Exception {
 		int l = Integer.parseInt(limit);
 		return itemDao.getAllBy(by, val, like, l);
 	}
@@ -93,7 +105,7 @@ public class Model {
 
 		return result;
 	}
-	
+
 	public Map<Category, List<Item>> getCatsWithFoods() throws Exception {
 		Map<Category, List<Item>> result = new HashMap<Category, List<Item>>();
 		
@@ -108,6 +120,30 @@ public class Model {
 		}
 
 		return result;
+	}
+	
+	public synchronized StringWriter createPO(String filePath, 
+			int orderNum, String xslFilename, 
+			Order order, Account user) throws Exception 
+	{
+		OrderDAO orderDao = new OrderDAO(filePath);
+		String fileName = orderDao.getOrderFileName(user.getUsername(), orderNum);
+		
+		JAXBContext jaxbContext = JAXBContext.newInstance(order.getClass());
+		Marshaller marshaller = jaxbContext.createMarshaller();
+		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+		marshaller.setProperty(Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
+
+		StringWriter sw = new StringWriter();
+		sw.write("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>");
+		sw.write("<?xml-stylesheet type=\"text/xsl\" href=\"" + xslFilename + "\"?>\n");
+
+		marshaller.marshal(order, new StreamResult(sw));
+		FileWriter orderFileWrite = orderDao.getFileWriter(fileName);
+		orderFileWrite.write(sw.toString());
+		orderFileWrite.close();
+
+		return sw;
 	}
 
 	

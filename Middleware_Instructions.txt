@@ -1,0 +1,11 @@
+Instructions on running Middleware Executable file
+
+In terminal, cd into this directory and type 
+    java -jar /Users/hasahmad/ws_4413/eFoods/Middleware_Executable.jar <PO_DIRECTORY>
+
+You can also run the command: java -jar /Users/hasahmad/ws_4413/eFoods/Middleware_Executable.jar
+And the program will ask you to enter the purchase orders directory.
+
+In the above command <PO_DIRECTORY> is where you give the location of where the Putchase Orders are store.
+It'll then process the orders and create processed.txt file in user's home directory 
+    as well as the report file in a directory called "POReports" under user's home directory 

@@ -12,8 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import model.catalog.Item;
+import model.catalog.Order;
 import model.Model;
-import model.Order;
 
 /**
  * Servlet implementation class Search

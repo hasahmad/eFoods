@@ -1,10 +1,7 @@
 package ctrl;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.StringWriter;
-import java.io.Writer;
 import java.util.Date;
 
 import javax.servlet.ServletContext;
@@ -14,15 +11,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
 
-import analytics.ComputeAnalytics;
 import model.Account;
-import model.Order;
-import model.Orders;
+import model.Model;
+import model.catalog.Order;
 import model.dao.OrderDAO;
 import model.helpers.Utils;
 
@@ -46,15 +38,15 @@ public class Checkout extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession s = request.getSession();
+		Model m = Model.getInstance();
 		Account user = (Account) s.getAttribute("AUTH");
 		Order order = (Order) s.getAttribute("order");
 		
-		String confirm = request.getParameter("confirm");
-		String cancel = request.getParameter("cancel");
-
 		ServletContext context = getServletContext();
 		String poPath = context.getRealPath("/POs");
-
+		
+		String confirm = request.getParameter("confirm");
+//		String cancel = request.getParameter("cancel");
 //		if (cancel != null) {
 //			String redirectUrl = "Cart";
 //			response.sendRedirect(redirectUrl);
@@ -67,30 +59,21 @@ public class Checkout extends HttpServlet {
 				order.setId(((Integer) request.getAttribute("totalAllOrders")));
 
 				try {
-					Orders orders = Orders.getInstance();
-					OrderDAO orderDao = new OrderDAO(new File(poPath));
-					
 					int orderNum = ((Integer) s.getAttribute("totalOrders")) + 1;
-					String orderLink = orderDao.getOrderFileName(user.getUsername(), orderNum);
+					m.createPO(poPath, orderNum, "res/xml/PO.xsl", order, user);
 
-					orders.createPO(poPath, 
-							orderLink, 
-							"res/xml/PO.xsl", orderDao, order);
 					order.clearCart();
-					
-//					s.removeAttribute("checkoutTime");
-					
 					request.setAttribute("orderCreated", orderNum);
 				} catch (Exception e) {
 					request.setAttribute("error", e.getMessage());
 					System.out.println("ERROR: " + e.getMessage());
 				}
 			} else {
-//				request.setAttribute("error", "Empty Cart!");
+				request.setAttribute("error", "Empty Cart!");
 				System.out.println("Empty Cart!");
 			}
 		}
-		
+
 		request.setAttribute("order", s.getAttribute("order"));
 		
 		request.getRequestDispatcher("/WEB-INF/pages/Checkout.jspx").forward(request, response);

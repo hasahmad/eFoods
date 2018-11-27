@@ -48,7 +48,26 @@
 								<c:forEach items="${cats}" var="cat" varStatus="loop">
 									<li data-target="pane-${cat.id}" id="cat-${cat.id}" class="is-active">
 								    	<a>
-									    	<span class="icon is-small"><i class="fa fa"></i></span>
+									    	<span class="icon is-small"><i class="fa fa">
+									    	<c:choose>
+												<c:when test="${cat.id == 3}">
+													<img src="res/img/meat.png" alt="" />
+												</c:when>
+												<c:when test="${cat.id == 4}">
+													<img src="res/img/cheese.png" alt="" />
+												</c:when>
+												<c:when test="${cat.id == 5}">
+													<img src="res/img/ice-cream.png" alt="" />
+												</c:when>
+												<c:when test="${cat.id == 6}">
+													<img src="res/img/cereal.png" alt="" />
+												</c:when>
+												<c:otherwise>
+													<img src="res/img/cutlery.png" alt="" />
+												</c:otherwise>
+											</c:choose>
+									    	
+									    	</i></span>
 									    	<span>${cat.name}</span>
 									    </a>
 								    </li>

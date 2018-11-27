@@ -24,6 +24,10 @@ public class Main {
 			posDir = sc.next();
 			sc.close();
 		}
+		
+		if (posDir.toLowerCase().equals("exit")) {
+			return;
+		}
 
 		String processedFile = homePath + "/processed.txt";
 		String reportsDir = homePath + "/POReports";
